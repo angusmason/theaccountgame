@@ -1,3 +1,4 @@
+#![feature(type_alias_impl_trait)]
 #![warn(clippy::pedantic, clippy::nursery)]
 
 mod conditions;
