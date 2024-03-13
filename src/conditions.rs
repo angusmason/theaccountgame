@@ -6,15 +6,15 @@ pub fn conditions() -> Vec<Condition> {
     vec![
         (
             |password: &String| password.len() >= 9,
-            "Password must be at least nine characters long.",
+            "Password must be at least nine characters long.".to_string(),
         ),
         (
-            |password: &String| password.chars().filter(char::is_uppercase).count() >= 12,
-            "Password must contain at least twelve uppercase characters.",
+            |password: &String| password.chars().filter(|char| char.is_uppercase()).count() >= 12,
+            "Password must contain at least twelve uppercase characters.".to_string(),
         ),
         (
-            |password: &String| password.chars().filter(char::is_lowercase).count() == 27,
-            "Password must contain exactly twenty-seven lowercase characters.",
+            |password: &String| password.chars().filter(|char| char.is_uppercase()).count() == 27,
+            "Password must contain exactly twenty-seven lowercase characters.".to_string(),
         ),
         (
             |password: &String| password.chars().filter(char::is_ascii_digit).count() >= 3,
