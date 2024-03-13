@@ -6,3 +6,6 @@ edition = "2021"
 [dependencies]
 rand = "0.8.5"
 rpassword = "7.3.1"
+
+[dependencies]
+pancurses = "0.17"
