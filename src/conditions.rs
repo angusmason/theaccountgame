@@ -1,20 +1,20 @@
 use rand::prelude::SliceRandom;
 use rand::thread_rng;
 
-pub type Condition = (fn(&String) -> bool, &'static str);
+pub type Condition = (fn(&String) -> bool, String);
 pub fn conditions() -> Vec<Condition> {
     vec![
         (
             |password: &String| password.len() >= 10,
-            "Password must be at least ten characters long.",
+            "Password must be at least ten characters long.".to_string(),
         ),
         (
             |password: &String| password.chars().any(char::is_uppercase),
-            "Password must contain at least one uppercase character.",
+            "Password must contain at least one uppercase character.".to_string(),
         ),
         (
             |password: &String| password.chars().filter(char::is_ascii_digit).count() >= 3,
-            "Password must contain at least three digits.",
+            "Password must contain at least three digits.".to_string(),
         ),
         (
             |password: &String| {
@@ -22,18 +22,19 @@ pub fn conditions() -> Vec<Condition> {
                     .split('\n')
                     .any(|line| password.contains(line))
             },
-            "Password must contain a correctly punctuated line from the Australian national anthem.",
+            "Password must contain a correctly punctuated line from the Australian national anthem.".to_string(),
         ),
         (
             |password: &String| !password.contains("Australia"),
-            "Password may not contain the phrase 'Australia'.",
+            "Password may not contain the phrase 'Australia'.".to_string(),
         ),
         (
             |password: &String| !password.contains('s'),
-            "Password may not contain the letter 's'.",
+            "Password may not contain the letter 's'.".to_string(),
         ),
         (
-            |password: &String| {
+            |password: &String| false,
+            {
                 enum Colour {
                     Grey, Yellow, Green
                 }
@@ -47,19 +48,27 @@ pub fn conditions() -> Vec<Condition> {
                     }
                 }
                 let mut words: Vec<&str> = include_str!("words").split('\n').collect();
-                let answer = words.choose(&mut thread_rng()).unwrap();
+                let clone = words.clone();
+                let answer = clone.choose(&mut thread_rng()).unwrap();
+                let mut feedback = String::new();
                 words.shuffle(&mut thread_rng());
                 let words = &words[..5];
                 for word in words {
-                    for character in word.chars() {
-                        if answer.contains(character) {
+                    for (index, character) in word.chars().enumerate() {
+                        let ansi = if answer.chars().position(|c| c == character) == Some(index) {
+                            Colour::Green
+                        } else if answer.contains(character) {
                             Colour::Yellow
-                        }
+                        } else {
+                            Colour::Grey
+                        }.into_ansi();
+                        feedback.push_str(format!("\x1b[{ansi}m{character}\x1b[0m").as_str());
                     }
+                    feedback.push('\n');
                 }
-                true
+                feedback.push_str("\nPassword must contain the answer to this Wordle.");
+                feedback
             },
-            "Password must be at least ten characters long.",
         ),
     ]
 }
