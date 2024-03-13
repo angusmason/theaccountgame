@@ -23,6 +23,7 @@ pub fn conditions() -> Vec<Condition> {
         (
             Box::new(|password: &String| {
                 include_str!("anthem")
+                    .trim()
                     .split('\n')
                     .any(|line| password.contains(line))
             }),
