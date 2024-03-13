@@ -13,7 +13,7 @@ pub fn conditions() -> Vec<Condition> {
             "Password must contain at least five uppercase characters.".to_string(),
         ),
         (
-            Box::new(|password: &String| password.chars().filter(|char| char.is_uppercase()).count() == 27),
+            Box::new(|password: &String| password.chars().filter(|char| char.is_lowercase()).count() == 27),
             "Password must contain exactly twenty-seven lowercase characters.".to_string(),
         ),
         (
@@ -70,7 +70,7 @@ pub fn conditions() -> Vec<Condition> {
             }
             feedback.push_str("\nPassword must contain the answer to this Wordle.");
             (
-                 Box::new(move |password: &String| password.contains(&answer)),
+                Box::new(move |password: &String| password.contains(&answer)),
                 feedback,
             )
         },
