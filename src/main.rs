@@ -2,18 +2,10 @@
 
 mod conditions;
 
-extern crate pancurses;
-
 use conditions::conditions;
 use rpassword::prompt_password;
-use pancurses::{initscr, endwin};
 
 fn main() {
-    let window = initscr();
-    window.printw("Hello Rust");
-    window.refresh();
-    window.getch();
-    endwin();
     let conditions = conditions();
     let password = 'outer: loop {
         let password = prompt_password("\nChoose a password: ")
