@@ -9,8 +9,8 @@ pub fn conditions() -> Vec<Condition> {
             "Password must be at least nine characters long.".to_string(),
         ),
         (
-            Box::new(|password: &String| password.chars().filter(|char| char.is_uppercase()).count() >= 12),
-            "Password must contain at least twelve uppercase characters.".to_string(),
+            Box::new(|password: &String| password.chars().filter(|char| char.is_uppercase()).count() >= 5),
+            "Password must contain at least five uppercase characters.".to_string(),
         ),
         (
             Box::new(|password: &String| password.chars().filter(|char| char.is_uppercase()).count() == 27),
