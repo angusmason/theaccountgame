@@ -4,8 +4,18 @@ mod conditions;
 
 use conditions::conditions;
 use rpassword::prompt_password;
+use yew::prelude::*;
+
+#[function_component(App)]
+fn app() -> Html {
+    html! {
+        <h1>{ "Hello World" }</h1>
+    }
+}
 
 fn main() {
+    yew::Renderer::<App>::new().render();
+
     let conditions = conditions();
     let password = 'outer: loop {
         let password = prompt_password("\nChoose a password: ")
