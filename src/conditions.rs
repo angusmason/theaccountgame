@@ -58,14 +58,33 @@ pub fn conditions() -> Vec<Condition> {
             let words = &words[..5];
             for word in words {
                 for (index, character) in word.chars().enumerate() {
-                    let ansi = if answer.chars().position(|c| c == character) == Some(index) {
-                        Colour::Green
-                    } else if answer.contains(character) {
-                        Colour::Yellow
-                    } else {
+                    let ansi = 'colour: {
+                        if character == answer.chars().nth(index).unwrap() {
+                            break 'colour Colour::Green;
+                        }
+
+                        let mut wrong_word = 0;
+                        let mut wrong_guess = 0;
+                        for (answer_index, answer_character) in answer.chars().enumerate() {
+                            if answer_character == character && word.chars().nth(answer_index).unwrap() != character {
+                                wrong_word += 1;
+                            }
+                            if (answer_index <= index) && (word.chars().nth(answer_index).unwrap() == character && answer_character != character) {
+                                wrong_guess += 1;
+                            }
+                            if answer_index >= index {
+                                if wrong_guess == 0 {
+                                    break;
+                                }
+                                if wrong_guess <= wrong_word {
+                                    break 'colour Colour::Yellow;
+                                }
+                            }
+                        }
                         Colour::Grey
                     }.into_ansi();
-                    feedback.push_str(format!("\x1b[{ansi}m{character}\x1b[0m").as_str());
+                    feedback.push_str(&format!("\x1b[{ansi}m{character}\x1b[0m"));
+
                 }
                 feedback.push('\n');
             }
