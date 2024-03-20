@@ -46,7 +46,9 @@ fn App() -> Html {
                 <div class="flex flex-col gap-4 p-4">
                     <p class="text-2xl text-red-500">
                         {
-                            // Map the wrong message to HTML elements
+                            // Map the wrong message to a HTML element
+                            // If it was Some, it will map to a paragraph with the message
+                            // If it was None, it will map to nothing and not render anything
                             wrong.map(|message| html! { <p>{message}</p> })
                         }
                     </p>
