@@ -12,6 +12,7 @@ fn App() -> Html {
     let password = use_state(String::new);
     // Handler for the input event
     let oninput = {
+        // Clone the password state so we can move it into the closure
         let password = password.clone();
         move |event: InputEvent| {
             // Get the target of the event and dynamically cast it to an HtmlInputElement, then get the
@@ -19,7 +20,10 @@ fn App() -> Html {
             password.set(event.target_dyn_into::<HtmlInputElement>().unwrap().value());
         }
     };
+    // Generate the conditions
     let conditions = conditions();
+    // Filter the conditions and get the messages for the ones that are wrong
+    // Collect them into a Vec
     let wrong = conditions
         .iter()
         .filter_map(|(condition, message)| (!condition(&password)).then_some(message).cloned())
@@ -45,7 +49,13 @@ fn App() -> Html {
                         {"Things wrong with your password:"}
                     </h1>
                     <ul>
-                        {wrong.iter().map(|message| html! { <p>{message}</p> }).collect::<Vec<_>>()}
+                        {
+                            // Map the wrong messages to HTML elements
+                            wrong
+                                .iter()
+                                .map(|message| html! { <p>{message}</p> })
+                                .collect::<Vec<_>>()
+                        }
                     </ul>
                 </div>
             </div>
