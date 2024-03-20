@@ -56,7 +56,7 @@ fn App() -> Html {
                             for="password"
                             class="absolute text-gray-400 duration-300 top-1 scale-75 left-2
                                 -translate-y-4 bg-white px-2 peer-focus:text-blue-600
-                                origin-left peer-placeholder-shown:scale-100 peer-focus:top-1 
+                                origin-left peer-placeholder-shown:scale-100 peer-focus:top-1
                                 peer-placeholder-shown:top-1/2 peer-focus:scale-75
                                 peer-focus:-translate-y-4 peer-placeholder-shown:-translate-y-3"
                         >
@@ -65,14 +65,18 @@ fn App() -> Html {
                     </div>
                 </div>
                 <div class="flex flex-col gap-4 p-4">
-                    <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
-                        {
-                            // Map the wrong message to a HTML element
-                            // If it was Some, it will map to a paragraph with the message
-                            // If it was None, it will map to nothing and not render anything
-                            wrong.map(|message| html! { <p>{message}</p> })
-                        }
-                    </p>
+                    {
+                        // Map the wrong message to a HTML element
+                        // If it was Some, it will map to a paragraph with the message
+                        // If it was None, it will map to nothing and not render anything
+                        (!password.is_empty())
+                            .then_some(())
+                            .and(wrong.map(|message| html! {
+                                <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
+                                    {message}
+                                </p>
+                            }))
+                    }
                 </div>
             </div>
         </main>
