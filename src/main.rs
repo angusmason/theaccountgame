@@ -2,6 +2,8 @@
 
 mod conditions;
 
+use std::ops::Deref;
+
 use crate::conditions::conditions;
 use web_sys::HtmlTextAreaElement;
 use yew::{function_component, html, use_state, Html, InputEvent, Renderer, TargetCast};
@@ -15,8 +17,8 @@ fn App() -> Html {
         // Clone the password state so we can move it into the closure
         let password = password.clone();
         move |event: InputEvent| {
-            // Get the target of the event and dynamically cast it to an HtmlInputElement, then get the
-            // value of the input and set the password state to it
+            // Get the target of the event and dynamically cast it to an HtmlInputElement, then get
+            // the value of the input and set the password state to it
             password.set(
                 event
                     .target_dyn_into::<HtmlTextAreaElement>()
@@ -47,8 +49,6 @@ fn App() -> Html {
                         type="password"
                         placeholder="Password"
                         class="rounded p-2 text-xl"
-                        // Hide the password by mapping all the characters to '\u{b7}' (middle dot)
-                        value={(*password).clone().chars().map(|_| '\u{b7}').collect::<String>()}
                         {oninput}
                     />
                 </div>
