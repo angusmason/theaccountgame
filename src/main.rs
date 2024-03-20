@@ -5,11 +5,16 @@ use yew::{function_component, html, use_state, Html, InputEvent, TargetCast};
 
 #[function_component]
 fn App() -> Html {
-    let input = use_state(String::new);
+    // State to store the password
+    let password = use_state(String::new);
+    // Handler for the input event
     let oninput = move |event: InputEvent| {
-        input.set(event.target_dyn_into::<HtmlInputElement>().unwrap().value());
+        // Get the target of the event and dynamically cast it to an HtmlInputElement, then get the
+        // value of the input and set the password state to it
+        password.set(event.target_dyn_into::<HtmlInputElement>().unwrap().value());
     };
 
+    // Return some HTML
     html! {
         <main class="grid place-content-center h-full">
             <div class="flex flex-col divide-y">

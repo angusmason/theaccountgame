@@ -1,0 +1,39 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "start trunk",
+            "command": "trunk",
+            "args": [
+                "serve",
+                "--open"
+            ]
+        },
+        {
+            "label": "start tailwind",
+            "command": "./tailwindcss",
+            "args": [
+                "-i",
+                "src/styles.css",
+                "-o",
+                "./out.css",
+                "-w",
+                "--minify"
+            ]
+        },
+        {
+            "label": "start dev server",
+            "dependsOn": [
+                "start trunk",
+                "start tailwind"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
