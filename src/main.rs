@@ -55,10 +55,9 @@ fn App() -> Html {
                         <label
                             for="password"
                             class="absolute text-gray-400 duration-300 top-1 scale-75 left-2
-                                -translate-y-4
-                                bg-white px-2 peer-focus:text-blue-600
-                                origin-left peer-placeholder-shown:scale-100
-                                peer-focus:top-1 peer-placeholder-shown:top-1/2 peer-focus:scale-75
+                                -translate-y-4 bg-white px-2 peer-focus:text-blue-600
+                                origin-left peer-placeholder-shown:scale-100 peer-focus:top-1 
+                                peer-placeholder-shown:top-1/2 peer-focus:scale-75
                                 peer-focus:-translate-y-4 peer-placeholder-shown:-translate-y-3"
                         >
                             {"Password"}
