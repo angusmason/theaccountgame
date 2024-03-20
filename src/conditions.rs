@@ -40,8 +40,8 @@ pub fn conditions() -> Vec<Condition> {
             "Password may not contain the phrase 'Australia'.".into(),
         ),
         (
-            Box::new(|password: &String| !password.contains('s')),
-            "Password may not contain the letter 's'.".into(),
+            Box::new(|password: &String| !password.contains('x')),
+            "Password may not contain the letter 'x'.".into(),
         ),
         {
 
