@@ -44,15 +44,12 @@ fn App() -> Html {
                     />
                 </div>
                 <div class="flex flex-col gap-4 p-4">
-                    <h1 class="text-2xl">
-                        {"Things wrong with your password:"}
-                    </h1>
-                    <ul>
+                    <p class="text-2xl text-red-500">
                         {
                             // Map the wrong message to HTML elements
                             wrong.map(|message| html! { <p>{message}</p> })
                         }
-                    </ul>
+                    </p>
                 </div>
             </div>
         </main>
