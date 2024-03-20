@@ -12,11 +12,20 @@ fn App() -> Html {
             input.set(event.target_dyn_into::<HtmlInputElement>().unwrap().value());
         }
     };
+
     html! {
-        <div class={classes!("")}>
-            {"Please choose a password."}
-            <input type="password" {oninput}/>
-        </div>
+        <main class="grid place-content-center h-full">
+            <div class="flex flex-col gap-4">
+                <h1 class="text-3xl">
+                    {"Please choose a password."}
+                </h1>
+                <input
+                    type="password"
+                    placeholder="Password"
+                    {oninput}
+                />
+            </div>
+        </main>
     }
 }
 
