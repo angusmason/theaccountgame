@@ -1,1 +1,5 @@
 /target
+out.css
+dist
+.DS_Store
+tailwindcss
