@@ -3,7 +3,7 @@
 mod conditions;
 
 use crate::conditions::conditions;
-use web_sys::HtmlInputElement;
+use web_sys::{HtmlInputElement, HtmlTextAreaElement};
 use yew::{function_component, html, use_state, Html, InputEvent, Renderer, TargetCast};
 
 #[function_component]
@@ -17,7 +17,13 @@ fn App() -> Html {
         move |event: InputEvent| {
             // Get the target of the event and dynamically cast it to an HtmlInputElement, then get the
             // value of the input and set the password state to it
-            password.set(event.target_dyn_into::<HtmlInputElement>().unwrap().value());
+            password.set(
+                event
+                    .target_dyn_into::<HtmlTextAreaElement>()
+                    .unwrap()
+                    .value()
+                    .replace('\n', ""),
+            );
         }
     };
     // Generate the conditions
@@ -30,16 +36,18 @@ fn App() -> Html {
 
     // Return some HTML
     html! {
-        <main class="grid place-content-center h-full">
-            <div class="flex flex-col divide-y max-w-2xl">
+        <main class="grid place-content-center h-full grid-cols-3">
+            <div></div>
+            <div class="flex flex-col divide-y">
                 <div class="flex flex-col gap-4 p-4">
                     <h1 class="text-3xl">
                         {"Please choose a password."}
                     </h1>
-                    <input
+                    <textarea
                         type="password"
                         placeholder="Password"
                         class="rounded p-2"
+                        value={(*password).clone()}
                         {oninput}
                     />
                 </div>
