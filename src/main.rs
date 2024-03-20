@@ -26,8 +26,7 @@ fn App() -> Html {
     // Collect them into a Vec
     let wrong = conditions
         .iter()
-        .filter_map(|(condition, message)| (!condition(&password)).then_some(message).cloned())
-        .collect::<Vec<_>>();
+        .find_map(|(condition, message)| (!condition(&password)).then_some(message).cloned());
 
     // Return some HTML
     html! {
