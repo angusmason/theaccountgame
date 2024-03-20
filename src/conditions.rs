@@ -10,39 +10,39 @@ enum Colour {
 }
 pub fn conditions() -> Vec<Condition> {
     vec![
-        // (
-        //     Box::new(|password: &String| password.len() >= 9),
-        //     "Password must be at least nine characters long.".into(),
-        // ),
-        // (
-        //     Box::new(|password: &String| password.chars().filter(|char| char.is_uppercase()).count() >= 5),
-        //     "Password must contain at least five uppercase characters.".into(),
-        // ),
-        // (
-        //     Box::new(|password: &String| password.chars().filter(|char| char.is_lowercase()).count() == 27),
-        //     "Password must contain exactly twenty-seven lowercase characters.".into(),
-        // ),
-        // (
-        //     Box::new(|password: &String| password.chars().filter(char::is_ascii_digit).count() >= 3),
-        //     "Password must contain at least three digits.".into(),
-        // ),
-        // (
-        //     Box::new(|password: &String| {
-        //         include_str!("anthem")
-        //             .trim()
-        //             .split('\n')
-        //             .any(|line| password.contains(line))
-        //     }),
-        //     "Password must contain a correctly punctuated line from the Australian national anthem.".into(),
-        // ),
-        // (
-        //     Box::new(|password: &String| !password.contains("Australia")),
-        //     "Password may not contain the phrase 'Australia'.".into(),
-        // ),
-        // (
-        //     Box::new(|password: &String| !password.contains('s')),
-        //     "Password may not contain the letter 's'.".into(),
-        // ),
+        (
+            Box::new(|password: &String| password.len() >= 9),
+            "Password must be at least nine characters long.".into(),
+        ),
+        (
+            Box::new(|password: &String| password.chars().filter(|char| char.is_uppercase()).count() >= 5),
+            "Password must contain at least five uppercase characters.".into(),
+        ),
+        (
+            Box::new(|password: &String| password.chars().filter(|char| char.is_lowercase()).count() == 27),
+            "Password must contain exactly twenty-seven lowercase characters.".into(),
+        ),
+        (
+            Box::new(|password: &String| password.chars().filter(char::is_ascii_digit).count() >= 3),
+            "Password must contain at least three digits.".into(),
+        ),
+        (
+            Box::new(|password: &String| {
+                include_str!("anthem")
+                    .trim()
+                    .split('\n')
+                    .any(|line| password.contains(line))
+            }),
+            "Password must contain a correctly punctuated line from the Australian national anthem.".into(),
+        ),
+        (
+            Box::new(|password: &String| !password.contains("Australia")),
+            "Password may not contain the phrase 'Australia'.".into(),
+        ),
+        (
+            Box::new(|password: &String| !password.contains('s')),
+            "Password may not contain the letter 's'.".into(),
+        ),
         {
 
             let mut words: Vec<&str> = include_str!("words").split('\n').collect();
