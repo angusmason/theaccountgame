@@ -31,7 +31,7 @@ fn App() -> Html {
     // Return some HTML
     html! {
         <main class="grid place-content-center h-full">
-            <div class="flex flex-col divide-y">
+            <div class="flex flex-col divide-y max-w-2xl">
                 <div class="flex flex-col gap-4 p-4">
                     <h1 class="text-3xl">
                         {"Please choose a password."}
