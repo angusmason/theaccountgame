@@ -2,10 +2,8 @@
 
 mod conditions;
 
-use std::ops::Deref;
-
 use crate::conditions::conditions;
-use web_sys::HtmlTextAreaElement;
+use web_sys::HtmlInputElement;
 use yew::{function_component, html, use_state, Html, InputEvent, Renderer, TargetCast};
 
 #[function_component]
@@ -21,7 +19,7 @@ fn App() -> Html {
             // the value of the input and set the password state to it
             password.set(
                 event
-                    .target_dyn_into::<HtmlTextAreaElement>()
+                    .target_dyn_into::<HtmlInputElement>()
                     .unwrap()
                     .value()
                     .replace('\n', ""),
@@ -45,7 +43,7 @@ fn App() -> Html {
                     <h1 class="text-2xl">
                         {"Please choose a password."}
                     </h1>
-                    <textarea
+                    <input
                         type="password"
                         placeholder="Password"
                         class="rounded p-2 text-xl"
