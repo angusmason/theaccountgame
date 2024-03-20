@@ -1,5 +1,8 @@
 #![warn(clippy::pedantic, clippy::nursery)]
 
+mod conditions;
+
+use crate::conditions::conditions;
 use web_sys::HtmlInputElement;
 use yew::{function_component, html, use_state, Html, InputEvent, Renderer, TargetCast};
 
@@ -8,11 +11,19 @@ fn App() -> Html {
     // State to store the password
     let password = use_state(String::new);
     // Handler for the input event
-    let oninput = move |event: InputEvent| {
-        // Get the target of the event and dynamically cast it to an HtmlInputElement, then get the
-        // value of the input and set the password state to it
-        password.set(event.target_dyn_into::<HtmlInputElement>().unwrap().value());
+    let oninput = {
+        let password = password.clone();
+        move |event: InputEvent| {
+            // Get the target of the event and dynamically cast it to an HtmlInputElement, then get the
+            // value of the input and set the password state to it
+            password.set(event.target_dyn_into::<HtmlInputElement>().unwrap().value());
+        }
     };
+    let conditions = conditions();
+    let wrong = conditions
+        .iter()
+        .filter_map(|(condition, message)| (!condition(&password)).then_some(message).cloned())
+        .collect::<Vec<_>>();
 
     // Return some HTML
     html! {
@@ -33,6 +44,9 @@ fn App() -> Html {
                     <h1 class="text-2xl">
                         {"Things wrong with your password:"}
                     </h1>
+                    <ul>
+                        {wrong.iter().map(|message| html! { <p>{message}</p> }).collect::<Vec<_>>()}
+                    </ul>
                 </div>
             </div>
         </main>
