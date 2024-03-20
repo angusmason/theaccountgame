@@ -3,7 +3,7 @@
 mod conditions;
 
 use crate::conditions::conditions;
-use web_sys::{HtmlInputElement, HtmlTextAreaElement};
+use web_sys::HtmlTextAreaElement;
 use yew::{function_component, html, use_state, Html, InputEvent, Renderer, TargetCast};
 
 #[function_component]
@@ -46,7 +46,7 @@ fn App() -> Html {
                     <textarea
                         type="password"
                         placeholder="Password"
-                        class="rounded p-2"
+                        class="rounded p-2 text-xl"
                         value={(*password).clone()}
                         {oninput}
                     />
