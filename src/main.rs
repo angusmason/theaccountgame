@@ -39,18 +39,24 @@ fn App() -> Html {
         <main class="grid place-content-center h-full grid-cols-3">
             <div></div>
             <div class="flex flex-col divide-y">
-                <div class="flex flex-col gap-4 p-4">
+                <div class="flex flex-col gap-4 p-4 relative z-0">
                     <h1 class="text-2xl font-semibold">
                         {"Create a password."}
                     </h1>
                     <input
                         type="password"
                         placeholder="Password"
-                        class="rounded p-2 text-xl"
+                        id="floating_standard"
+                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        placeholder=" "
                         {oninput}
                     />
+                    <label
+                        for="floating_standard"
+                        class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+                    >{"Password"}</label>
                 </div>
-                <div class="flex flex-col gap-4 p-4">
+                <div>
                     <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
                         {
                             // Map the wrong message to a HTML element
