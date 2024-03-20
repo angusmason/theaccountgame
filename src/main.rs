@@ -42,8 +42,8 @@ fn App() -> Html {
             <div></div>
             <div class="flex flex-col divide-y">
                 <div class="flex flex-col gap-4 p-4">
-                    <h1 class="text-2xl">
-                        {"Please choose a password."}
+                    <h1 class="text-2xl font-semibold">
+                        {"Create a password."}
                     </h1>
                     <textarea
                         type="password"
