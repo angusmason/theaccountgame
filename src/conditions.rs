@@ -39,10 +39,6 @@ pub fn conditions() -> Vec<Condition> {
             Box::new(|password: &String| !password.contains("Australia")),
             "Password may not contain the phrase 'Australia'.".into(),
         ),
-        (
-            Box::new(|password: &String| !password.contains('x')),
-            "Password may not contain the letter 'x'.".into(),
-        ),
         {
             let mut words: Vec<&str> = include_str!("words").split('\n').collect();
             let clone = words.clone();
