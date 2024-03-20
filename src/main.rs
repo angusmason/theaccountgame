@@ -47,7 +47,8 @@ fn App() -> Html {
                         type="password"
                         placeholder="Password"
                         class="rounded p-2 text-xl"
-                        value={(*password).clone()}
+                        // Hide the password by mapping all the characters to '\u{b7}' (middle dot)
+                        value={(*password).clone().chars().map(|_| '\u{b7}').collect::<String>()}
                         {oninput}
                     />
                 </div>
