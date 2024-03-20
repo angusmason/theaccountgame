@@ -4,7 +4,7 @@ mod conditions;
 
 use crate::conditions::conditions;
 use web_sys::HtmlInputElement;
-use yew::{function_component, html, use_state, Html, InputEvent, Renderer, TargetCast};
+use yew::{function_component, html, use_memo, use_state, Html, InputEvent, Renderer, TargetCast};
 
 #[function_component]
 fn App() -> Html {
@@ -27,7 +27,7 @@ fn App() -> Html {
         }
     };
     // Generate the conditions
-    let conditions = conditions();
+    let conditions = use_memo((), |()| conditions());
     // Filter the conditions and get the messages for the ones that are wrong
     // Collect them into a Vec
     let wrong = conditions
