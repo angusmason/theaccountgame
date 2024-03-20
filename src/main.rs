@@ -1,13 +1,12 @@
 #![warn(clippy::pedantic, clippy::nursery)]
 
 use web_sys::HtmlInputElement;
-use yew::{classes, function_component, html, use_state, Html, InputEvent, TargetCast};
+use yew::{function_component, html, use_state, Html, InputEvent, TargetCast};
 
 #[function_component]
 fn App() -> Html {
     let input = use_state(String::new);
     let oninput = {
-        let input = input.clone();
         move |event: InputEvent| {
             input.set(event.target_dyn_into::<HtmlInputElement>().unwrap().value());
         }
