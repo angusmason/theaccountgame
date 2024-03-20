@@ -68,7 +68,7 @@ fn App() -> Html {
                     {
                         // Map the wrong message to a HTML element
                         // If it was Some, it will map to a paragraph with the message
-                        // If it was None, it will map to nothing and not render anything
+                        // If it was None or if the password is empty, it will map to nothing
                         (!password.is_empty())
                             .then_some(())
                             .and(wrong.map(|message| html! {
