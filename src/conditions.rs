@@ -44,7 +44,6 @@ pub fn conditions() -> Vec<Condition> {
             "Password may not contain the letter 'x'.".into(),
         ),
         {
-
             let mut words: Vec<&str> = include_str!("words").split('\n').collect();
             let clone = words.clone();
             let answer = *clone.choose(&mut thread_rng()).unwrap();
@@ -91,6 +90,10 @@ pub fn conditions() -> Vec<Condition> {
                 }
             )
         },
+        (
+            Box::new(|password: &String| password.contains(password.len().to_string().as_str())),
+            "Password must contain its length.".into(),
+        ),
     ]
 }
 
