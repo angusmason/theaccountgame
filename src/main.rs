@@ -1,7 +1,7 @@
 #![warn(clippy::pedantic, clippy::nursery)]
 
 use web_sys::HtmlInputElement;
-use yew::{function_component, html, use_state, Html, InputEvent, TargetCast};
+use yew::{function_component, html, use_state, Html, InputEvent, Renderer, TargetCast};
 
 #[function_component]
 fn App() -> Html {
@@ -40,5 +40,5 @@ fn App() -> Html {
 }
 
 fn main() {
-    yew::Renderer::<App>::new().render();
+    Renderer::<App>::new().render();
 }
