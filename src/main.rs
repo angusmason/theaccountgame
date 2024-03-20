@@ -40,7 +40,7 @@ fn App() -> Html {
             <div></div>
             <div class="flex flex-col divide-y">
                 <div class="flex flex-col gap-4 p-4">
-                    <h1 class="text-3xl">
+                    <h1 class="text-2xl">
                         {"Please choose a password."}
                     </h1>
                     <textarea
@@ -52,7 +52,7 @@ fn App() -> Html {
                     />
                 </div>
                 <div class="flex flex-col gap-4 p-4">
-                    <p class="text-2xl text-red-500 bg-red-200 rounded-xl p-4">
+                    <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
                         {
                             // Map the wrong message to a HTML element
                             // If it was Some, it will map to a paragraph with the message
