@@ -120,7 +120,7 @@ fn App() -> Html {
                         <button
                             disabled={confirm != password}
                             class="disabled:opacity-20 border-gray-700 border p-2 rounded-xl
-                                bg-gray-100 hover:bg-gray-200 transition"
+                                bg-w hover:bg-gray-200 transition"
                         >
                             {"Submit"}
                         </button>
