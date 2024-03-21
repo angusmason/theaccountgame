@@ -10,22 +10,6 @@ use yew::{function_component, html, use_memo, use_state, Html, InputEvent, Rende
 fn App() -> Html {
     // State to store the password
     let password = use_state(String::new);
-    // Handler for the input event
-    let oninput = {
-        // Clone the password state so we can move it into the closure
-        let password = password.clone();
-        move |event: InputEvent| {
-            // Get the target of the event and dynamically cast it to an HtmlInputElement, then get
-            // the value of the input and set the password state to it
-            password.set(
-                event
-                    .target_dyn_into::<HtmlInputElement>()
-                    .unwrap()
-                    .value()
-                    .replace('\n', ""),
-            );
-        }
-    };
     // Generate the conditions
     let conditions = use_memo((), |()| conditions());
     let discovered = use_state(|| conditions.iter().map(|_| false).collect::<Vec<_>>());
@@ -37,13 +21,30 @@ fn App() -> Html {
             (!condition(&password)).then_some((message.clone(), index))
         })
         .unzip();
+    // Handler for the input event
+    let oninput = {
+        // Clone the password state so we can move it into the closure
+        let password = password.clone();
+        let discovered = discovered.clone();
+        move |event: InputEvent| {
+            // Get the target of the event and dynamically cast it to an HtmlInputElement, then get
+            // the value of the input and set the password state to it
+            password.set(
+                event
+                    .target_dyn_into::<HtmlInputElement>()
+                    .unwrap()
+                    .value()
+                    .replace('\n', ""),
+            );
 
-    // If there is a wrong condition, mark it as discovered
-    if let Some(index) = wrong_index {
-        let mut cloned = discovered.to_vec();
-        cloned[index] = true;
-        discovered.set(cloned);
-    }
+            // If there is a wrong condition, mark it as discovered
+            if let Some(index) = wrong_index {
+                let mut cloned = discovered.to_vec();
+                cloned[index] = true;
+                discovered.set(cloned);
+            }
+        }
+    };
 
     // Return some HTML
     html! {
@@ -105,6 +106,24 @@ fn App() -> Html {
                                         {message}
                                     </p>
                                 }))
+                        }
+                        {
+                            conditions
+                                .iter()
+                                .enumerate()
+                                .filter_map(|(index, (condition, message))|
+                                    (
+                                        discovered[index]
+                                            && !condition(&password)
+                                            && wrong_index != Some(index)
+                                            && !password.is_empty()
+                                    )
+                                        .then_some(html! {
+                                            <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
+                                                {message}
+                                            </p>
+                                        })
+                                ).collect::<Vec<_>>()
                         }
                     </div>
                 </div>
