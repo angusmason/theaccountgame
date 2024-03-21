@@ -98,7 +98,7 @@ pub fn conditions() -> Vec<Condition> {
                     .sum::<usize>()
                     == 14
             }),
-            "Digits in password must sum to 14.".into(),
+            "Digits in password must sum to fourteen.".into(),
         ),
     ]
 }
