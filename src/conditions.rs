@@ -1,5 +1,5 @@
-use rand::prelude::SliceRandom;
 use rand::thread_rng;
+use rand::{prelude::SliceRandom, Rng};
 use yew::{html, Html};
 
 pub type Condition = (Box<dyn Fn(&String) -> bool>, Html);
@@ -8,20 +8,32 @@ enum Colour {
     Yellow,
     Green,
 }
+
+#[allow(clippy::too_many_lines)]
 pub fn conditions() -> Vec<Condition> {
+    let numbers: Vec<_> = include_str!("numbers").trim().split('\n').collect();
     vec![
-        (
-            Box::new(|password: &String| password.len() >= 9),
-            "Password must be at least nine characters long.".into(),
-        ),
-        (
-            Box::new(|password: &String| password.chars().filter(|char| char.is_uppercase()).count() >= 5),
-            "Password must contain at least five uppercase characters.".into(),
-        ),
-        (
-            Box::new(|password: &String| password.chars().filter(|char| char.is_lowercase()).count() == 27),
-            "Password must contain exactly twenty-seven lowercase characters.".into(),
-        ),
+        {
+            let number = thread_rng().gen_range(6..=10);
+            (
+                Box::new(move |password: &String| password.len() >= number),
+                format!("Password must be at least {} characters long.", numbers[number]).into(),
+            )
+        },
+        {
+            let number = thread_rng().gen_range(5..=8);
+            (
+                Box::new(move |password: &String| password.chars().filter(|char| char.is_uppercase()).count() >= number),
+                format!("Password must contain at least {} uppercase characters.", numbers[number]).into(),
+            )
+        },
+        {
+            let number = thread_rng().gen_range(37..=45);
+            (
+                Box::new(move |password: &String| password.chars().filter(|char| char.is_lowercase()).count() == number),
+                format!("Password must contain exactly {} lowercase characters.", numbers[number]).into(),
+            )
+        },
         (
             Box::new(|password: &String| password.chars().filter(char::is_ascii_digit).count() >= 3),
             "Password must contain at least three digits.".into(),
@@ -90,16 +102,19 @@ pub fn conditions() -> Vec<Condition> {
             Box::new(|password: &String| password.contains(password.len().to_string().as_str())),
             "Password must contain its length.".into(),
         ),
-        (
-            Box::new(|password: &String| {
-                password
-                    .chars()
-                    .filter_map(|char| char.to_string().parse::<usize>().ok())
-                    .sum::<usize>()
-                    == 14
-            }),
-            "Digits in password must sum to fourteen.".into(),
-        ),
+        {
+            let number = thread_rng().gen_range(5..=20);
+            (
+                Box::new(move |password: &String| {
+                    password
+                        .chars()
+                        .filter_map(|char| char.to_string().parse::<usize>().ok())
+                        .sum::<usize>()
+                        == number
+                }),
+                format!("Digits in password must sum to {}.", numbers[number]).into(),
+            )
+        },
     ]
 }
 
