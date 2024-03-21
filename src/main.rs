@@ -96,7 +96,9 @@ fn App() -> Html {
     // Return some HTML
     html! {
         <main class="flex justify-center h-full">
-            <div class="flex flex-col items-center justify-center h-full max-w-md w-full px-4">
+            <div
+                class="flex flex-col items-center justify-center h-full max-w-md w-full px-4 gap-4"
+            >
                 <div class="flex flex-col gap-4 relative w-full">
                     <h1 class="text-2xl font-semibold">
                         {"Create a password."}
@@ -107,6 +109,23 @@ fn App() -> Html {
                         placeholder="Password"
                         value={(*password).clone()}
                     />
+                    <div class="flex flex-col gap-4 absolute top-full pt-4 inset-x-0">
+                        {
+                            // Map the wrong message to a HTML element
+                            // If it was Some, it will map to a paragraph with the message
+                            // If it was None or if the password is empty, it will map to nothing
+                            (!password.is_empty())
+                                .then_some(())
+                                .and(wrong.as_ref().map(|message| html! {
+                                    <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
+                                        {message}
+                                    </p>
+                                }))
+                        }
+
+                    </div>
+                </div>
+                <div class="flex flex-col gap-4 relative w-full">
                     <div class={classes!(
                         "transition", "duration-300", "flex", "flex-col", "gap-4",
                         wrong.is_some().then_some("opacity-0")
@@ -126,18 +145,6 @@ fn App() -> Html {
                         </button>
                     </div>
                     <div class="flex flex-col gap-4 absolute top-full pt-4 inset-x-0">
-                        {
-                            // Map the wrong message to a HTML element
-                            // If it was Some, it will map to a paragraph with the message
-                            // If it was None or if the password is empty, it will map to nothing
-                            (!password.is_empty())
-                                .then_some(())
-                                .and(wrong.map(|message| html! {
-                                    <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
-                                        {message}
-                                    </p>
-                                }))
-                        }
                         {
                             (confirm != password && !confirm.is_empty())
                                 .then_some(())
