@@ -90,6 +90,23 @@ pub fn conditions() -> Vec<Condition> {
             Box::new(|password: &String| password.contains(password.len().to_string().as_str())),
             "Password must contain its length.".into(),
         ),
+        (
+            Box::new(|password: &String| 
+                password
+                    .chars()
+                    .filter_map(|char| 
+                        char
+                            .is_ascii_digit()
+                            .then_some(
+                                char.to_string()
+                                    .parse::<usize>()
+                                    .unwrap()
+                            )
+                    )
+                    .sum::<usize>() == 14
+            ),
+            "Digits in password must sum to 14.".into(),
+        ),
     ]
 }
 
