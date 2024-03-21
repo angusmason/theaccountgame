@@ -41,27 +41,27 @@ fn App() -> Html {
             <div class="flex flex-col">
                 <div class="flex flex-col gap-4 px-2 pb-2">
                     <h1 class="text-2xl font-semibold">
-                        {"Create an account."}
+                        {"Create a password."}
                     </h1>
-                    <div class="relative">
-                        <input
-                            id="username"
-                            placeholder=" "
-                            autocomplete="off"
-                            class="block px-2.5 pb-2.5 pt-4 w-full text-1xl rounded-lg border
-                                border-gray-300 focus:ring-0 focus:border-blue-600 peer"
-                        />
-                        <label
-                            for="username"
-                            class="absolute text-gray-400 duration-300 top-1 scale-75 left-2
-                                -translate-y-4 bg-white px-2 peer-focus:text-blue-600
-                                origin-left peer-placeholder-shown:scale-100 peer-focus:top-1
-                                peer-placeholder-shown:top-1/2 peer-focus:scale-75
-                                peer-focus:-translate-y-4 peer-placeholder-shown:-translate-y-3"
-                        >
-                            {"Username"}
-                        </label>
-                    </div>
+                    // <div class="relative">
+                    //     <input
+                    //         id="username"
+                    //         placeholder=" "
+                    //         autocomplete="off"
+                    //         class="block px-2.5 pb-2.5 pt-4 w-full text-1xl rounded-lg border
+                    //             border-gray-300 focus:ring-0 focus:border-blue-600 peer"
+                    //     />
+                    //     <label
+                    //         for="username"
+                    //         class="absolute text-gray-400 duration-300 top-1 scale-75 left-2
+                    //             -translate-y-4 bg-white px-2 peer-focus:text-blue-600
+                    //             origin-left peer-placeholder-shown:scale-100 peer-focus:top-1
+                    //             peer-placeholder-shown:top-1/2 peer-focus:scale-75
+                    //             peer-focus:-translate-y-4 peer-placeholder-shown:-translate-y-3"
+                    //     >
+                    //         {"Username"}
+                    //     </label>
+                    // </div>
                     <div class="relative">
                         <input
                             type="password"
