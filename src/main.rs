@@ -36,10 +36,9 @@ fn App() -> Html {
 
     // Return some HTML
     html! {
-        <main class="flex md:justify-center">
-            <div></div>
-            <div class="flex flex-col divide-y w-full md:w-1/3">
-                <div class="flex flex-col gap-4 p-4">
+        <main class="flex md:justify-center h-full">
+            <div class="flex flex-col items-center justify-center h-full w-full md:w-1/3 px-4">
+                <div class="flex flex-col gap-4 relative w-full">
                     <h1 class="text-2xl font-semibold">
                         {"Create a password."}
                     </h1>
@@ -63,20 +62,20 @@ fn App() -> Html {
                             {"Password"}
                         </label>
                     </div>
-                </div>
-                <div class="flex flex-col gap-4 p-4">
-                    {
-                        // Map the wrong message to a HTML element
-                        // If it was Some, it will map to a paragraph with the message
-                        // If it was None or if the password is empty, it will map to nothing
-                        (!password.is_empty())
-                            .then_some(())
-                            .and(wrong.map(|message| html! {
-                                <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
-                                    {message}
-                                </p>
-                            }))
-                    }
+                    <div class="flex flex-col gap-4 absolute top-full pt-4 inset-x-0">
+                        {
+                            // Map the wrong message to a HTML element
+                            // If it was Some, it will map to a paragraph with the message
+                            // If it was None or if the password is empty, it will map to nothing
+                            (!password.is_empty())
+                                .then_some(())
+                                .and(wrong.map(|message| html! {
+                                    <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
+                                        {message}
+                                    </p>
+                                }))
+                        }
+                    </div>
                 </div>
             </div>
         </main>
