@@ -28,11 +28,22 @@ fn App() -> Html {
     };
     // Generate the conditions
     let conditions = use_memo((), |()| conditions());
-    // Filter the conditions and get the messages for the ones that are wrong
-    // Collect them into a Vec
-    let wrong = conditions
+    let discovered = use_state(|| conditions.iter().map(|_| false).collect::<Vec<_>>());
+    // Find the condition that is not met and map it to the message
+    let (wrong, wrong_index) = conditions
         .iter()
-        .find_map(|(condition, message)| (!condition(&password)).then_some(message).cloned());
+        .enumerate()
+        .find_map(|(index, (condition, message))| {
+            (!condition(&password)).then_some((message.clone(), index))
+        })
+        .unzip();
+
+    // If there is a wrong condition, mark it as discovered
+    if let Some(index) = wrong_index {
+        let mut cloned = discovered.to_vec();
+        cloned[index] = true;
+        discovered.set(cloned);
+    }
 
     // Return some HTML
     html! {
