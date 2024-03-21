@@ -21,7 +21,7 @@ pub fn conditions() -> Vec<Condition> {
             )
         },
         {
-            let number = thread_rng().gen_range(5..=8);
+            let number = thread_rng().gen_range(3..=8);
             (
                 Box::new(move |password: &String|
                     password
@@ -35,7 +35,7 @@ pub fn conditions() -> Vec<Condition> {
             )
         },
         {
-            let number = thread_rng().gen_range(37..=45);
+            let number = thread_rng().gen_range(23..=35);
             (
                 Box::new(move |password: &String|
                     password
@@ -48,14 +48,20 @@ pub fn conditions() -> Vec<Condition> {
                 ).into(),
             )
         },
-        (
-            Box::new(|password: &String|
-                password
-                    .chars()
-                    .filter(char::is_ascii_digit).count() >= 3
-            ),
-            "Password must contain at least three digits.".into(),
-        ),
+        {
+            let number = thread_rng().gen_range(3..=6);
+            (
+                Box::new(move |password: &String|
+                    password
+                        .chars()
+                        .filter(char::is_ascii_digit).count() >= number
+                ),
+                format!(
+                    "Password must contain at least {} digits.",
+                    numbers[number]
+                ).into(),
+            )
+        },
         (
             Box::new(|password: &String| {
                 include_str!("anthem")
@@ -131,7 +137,7 @@ pub fn conditions() -> Vec<Condition> {
             "Password must contain its length.".into(),
         ),
         {
-            let number = thread_rng().gen_range(5..=20);
+            let number = thread_rng().gen_range(7..=19);
             (
                 Box::new(move |password: &String| {
                     password
