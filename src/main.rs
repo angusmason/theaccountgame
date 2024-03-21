@@ -48,6 +48,7 @@ fn App() -> Html {
                             type="password"
                             id="password"
                             placeholder=" "
+                            autocomplete="off"
                             class="block px-2.5 pb-2.5 pt-4 w-full text-sm rounded-lg border
                                 border-gray-300 focus:ring-0 focus:border-blue-600 peer"
                             {oninput}
