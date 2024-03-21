@@ -23,19 +23,37 @@ pub fn conditions() -> Vec<Condition> {
         {
             let number = thread_rng().gen_range(5..=8);
             (
-                Box::new(move |password: &String| password.chars().filter(|char| char.is_uppercase()).count() >= number),
-                format!("Password must contain at least {} uppercase characters.", numbers[number]).into(),
+                Box::new(move |password: &String|
+                    password
+                        .chars()
+                        .filter(|char| char.is_uppercase()).count() >= number
+                ),
+                format!(
+                    "Password must contain at least {} uppercase characters.",
+                    numbers[number]
+                ).into(),
             )
         },
         {
             let number = thread_rng().gen_range(37..=45);
             (
-                Box::new(move |password: &String| password.chars().filter(|char| char.is_lowercase()).count() == number),
-                format!("Password must contain exactly {} lowercase characters.", numbers[number]).into(),
+                Box::new(move |password: &String|
+                    password
+                        .chars()
+                        .filter(|char| char.is_lowercase()).count() == number
+                ),
+                format!(
+                    "Password must contain exactly {} lowercase characters.",
+                    numbers[number]
+                ).into(),
             )
         },
         (
-            Box::new(|password: &String| password.chars().filter(char::is_ascii_digit).count() >= 3),
+            Box::new(|password: &String|
+                password
+                    .chars()
+                    .filter(char::is_ascii_digit).count() >= 3
+            ),
             "Password must contain at least three digits.".into(),
         ),
         (
@@ -45,7 +63,8 @@ pub fn conditions() -> Vec<Condition> {
                     .split('\n')
                     .any(|line| password.contains(line))
             }),
-            "Password must contain a correctly punctuated line from the Australian national anthem.".into(),
+            "Password must contain a correctly punctuated line from the Australian national anthem."
+                .into(),
         ),
         (
             Box::new(|password: &String| !password.contains("Australia")),
@@ -72,17 +91,26 @@ pub fn conditions() -> Vec<Condition> {
                                                 {word.iter().map(|(colour, character)| {
                                                     match colour {
                                                         Colour::Grey => html! {
-                                                            <div class="bg-gray-500 w-8 grid place-content-center">
+                                                            <div
+                                                                class="bg-gray-500 w-8 grid
+                                                                    place-content-center"
+                                                            >
                                                                 {character.to_string().to_uppercase()}
                                                             </div>
                                                         },
                                                         Colour::Yellow => html! {
-                                                            <div class="bg-yellow-500 w-8 grid place-content-center">
+                                                            <div
+                                                                class="bg-yellow-500 w-8 grid
+                                                                    place-content-center"
+                                                            >
                                                                 {character.to_string().to_uppercase()}
                                                             </div>
                                                         },
                                                         Colour::Green => html! {
-                                                            <div class="bg-green-500 w-8 grid place-content-center">
+                                                            <div
+                                                                class="bg-green-500 w-8 grid
+                                                                    place-content-center"
+                                                            >
                                                                 {character.to_string().to_uppercase()}
                                                             </div>
                                                         },
