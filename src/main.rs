@@ -36,8 +36,8 @@ fn App() -> Html {
 
     // Return some HTML
     html! {
-        <main class="flex md:justify-center h-full">
-            <div class="flex flex-col items-center justify-center h-full w-full md:w-1/3 px-4">
+        <main class="flex justify-center h-full">
+            <div class="flex flex-col items-center justify-center h-full max-w-4xl w-full px-4">
                 <div class="flex flex-col gap-4 relative w-full">
                     <h1 class="text-2xl font-semibold">
                         {"Create a password."}
