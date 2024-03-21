@@ -39,7 +39,7 @@ fn App() -> Html {
         <main class="grid place-content-center h-full grid-cols-3">
             <div></div>
             <div class="flex flex-col">
-                <div class="flex flex-col gap-4 px-2 pb-4">
+                <div class="flex flex-col gap-4 px-2 pb-2">
                     <h1 class="text-2xl font-semibold">
                         {"Create a password."}
                     </h1>
@@ -64,7 +64,7 @@ fn App() -> Html {
                         </label>
                     </div>
                 </div>
-                <div class="flex flex-col px-2 pt-4">
+                <div class="flex flex-col px-2 pt-2">
                     {
                         // Map the wrong message to a HTML element
                         // If it was Some, it will map to a paragraph with the message
