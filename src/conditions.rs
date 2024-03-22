@@ -143,12 +143,12 @@ pub fn conditions() -> Vec<Condition> {
             )
         },
         {
-            let colour: [u8; 3] = (0..3)
+            let [r, g, b] = (0..3)
                 .map(|_| thread_rng().gen_range(0..=0xff))
                 .collect::<Vec<_>>()
                 .try_into()
                 .unwrap();
-            let hex = format!("{:02x}{:02x}{:02x}", colour[0], colour[1], colour[2]);
+            let hex = format!("{r:02x}{g:02x}{b:02x}");
             (
                 {
                     let hex = hex.clone();
