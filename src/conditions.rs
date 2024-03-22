@@ -153,7 +153,7 @@ pub fn conditions() -> Vec<Condition> {
             (
                 {
                     let hex = hex.clone();
-                    Box::new(move |password: &String| *password.to_lowercase() == hex)
+                    Box::new(move |password: &String| password.to_lowercase().contains(&hex))
                 },
                 html! {
                     <div class="flex flex-col gap-4">
