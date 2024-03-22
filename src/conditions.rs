@@ -1,5 +1,3 @@
-use std::time::SystemTime;
-
 use chrono::Local;
 use rand::thread_rng;
 use rand::{prelude::SliceRandom, Rng};
