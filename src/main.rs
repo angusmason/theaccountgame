@@ -67,7 +67,7 @@ fn App() -> Html {
     let confirm = use_state(String::new);
     // Generate the conditions
     let conditions = use_memo((), |()| conditions());
-    let discovered = use_state(|| conditions.iter().map(|_| false).collect::<Vec<_>>());
+    let discovered = use_state(|| conditions.iter().map(|_| true).collect::<Vec<_>>());
     // Find the condition that is not met and map it to the message
     let (wrong, wrong_index) = conditions
         .iter()
@@ -126,7 +126,7 @@ fn App() -> Html {
                         placeholder="Password"
                         value={(*password).clone()}
                     />
-                    <div class="flex flex-col gap-4 absolute top-full pt-4 inset-x-0">
+                    <div class="flex flex-col gap-4 absolute top-full py-4 inset-x-0">
                         {
                             // Map the wrong message to a HTML element
                             // If it was Some, it will map to a paragraph with the message
