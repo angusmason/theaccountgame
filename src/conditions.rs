@@ -14,7 +14,7 @@ pub fn conditions() -> Vec<Condition> {
     let numbers: Vec<_> = include_str!("numbers").trim().split('\n').collect();
     vec![
         {
-            let number = thread_rng().gen_range(3..=8);
+            let number = thread_rng().gen_range(3..=6);
             (
                 Box::new(move |password: &String|
                     password
@@ -23,20 +23,6 @@ pub fn conditions() -> Vec<Condition> {
                 ),
                 format!(
                     "Password must contain at least {} uppercase characters.",
-                    numbers[number]
-                ).into(),
-            )
-        },
-        {
-            let number = thread_rng().gen_range(23..=35);
-            (
-                Box::new(move |password: &String|
-                    password
-                        .chars()
-                        .filter(|char| char.is_lowercase()).count() == number
-                ),
-                format!(
-                    "Password must contain exactly {} lowercase characters.",
                     numbers[number]
                 ).into(),
             )
@@ -69,6 +55,20 @@ pub fn conditions() -> Vec<Condition> {
             Box::new(|password: &String| !password.contains("Australia")),
             "Password may not contain the phrase 'Australia'.".into(),
         ),
+        {
+            let number = thread_rng().gen_range(23..=35);
+            (
+                Box::new(move |password: &String|
+                    password
+                        .chars()
+                        .filter(|char| char.is_lowercase()).count() == number
+                ),
+                format!(
+                    "Password must contain exactly {} lowercase characters.",
+                    numbers[number]
+                ).into(),
+            )
+        },
         {
             let mut words: Vec<&str> = include_str!("words").split('\n').collect();
             let clone = words.clone();
