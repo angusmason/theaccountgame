@@ -158,7 +158,7 @@ pub fn conditions() -> Vec<Condition> {
                     <div class="flex flex-col gap-4">
                         <p>{"Password must contain the 24-bit hexadecimal colour of this box."}</p>
                         <div
-                            class="w-8 h-8 border-slate-600 border-8"
+                            class="w-32 h-32 border-slate-600 border-8"
                             style={format!("background-color: #{hex}")}
                         />
                     </div>
