@@ -157,8 +157,8 @@ fn App() -> Html {
                 </div>
                 <div class="flex flex-col gap-4 relative w-full">
                     <div class={classes!(
-                        "transition", "duration-300", "flex", "flex-col", "gap-4",
-                        wrong.is_some().then_some("opacity-0 pointer-events-none")
+                        "flex", "flex-col", "gap-4",
+                        wrong.is_some().then_some("hidden")
                     )}>
                         <Input
                             oninput={confirm_oninput}
