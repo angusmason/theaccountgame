@@ -2,8 +2,10 @@
 
 mod conditions;
 
+use std::iter::once;
+
 use crate::conditions::conditions;
-use web_sys::HtmlInputElement;
+use web_sys::{console::log, js_sys::Array, wasm_bindgen::JsValue, HtmlInputElement};
 use yew::{
     classes, function_component, html, use_memo, use_state, Callback, Html, InputEvent, Properties,
     Renderer, TargetCast,
@@ -54,7 +56,7 @@ fn App() -> Html {
     let confirm = use_state(String::new);
     // Generate the conditions
     let conditions = use_memo((), |()| conditions());
-    let discovered = use_state(|| conditions.iter().map(|_| false).collect::<Vec<_>>());
+    let discovered = use_state(|| conditions.iter().map(|_| true).collect::<Vec<_>>());
     // Find the condition that is not met and map it to the message
     let (wrong, wrong_index) = conditions
         .iter()
@@ -68,6 +70,7 @@ fn App() -> Html {
         // Clone the password state so we can move it into the closure
         let password = password.clone();
         let confirm = confirm.clone();
+        let discovered = discovered.clone();
         move |event: InputEvent| {
             // Get the target of the event and dynamically cast it to an HtmlInputElement, then get
             // the value of the input and set the password state to it
@@ -79,12 +82,16 @@ fn App() -> Html {
                     .replace('\n', ""),
             );
             confirm.set(String::new());
+            if let Some(index) = wrong_index {
+                let mut cloned = discovered.to_vec();
+                cloned[index] = true;
+                discovered.set(cloned);
+            }
         }
     };
     let confirm_oninput = {
         // Clone the password state so we can move it into the closure
         let confirm = confirm.clone();
-        let discovered = discovered.clone();
         move |event: InputEvent| {
             // Get the target of the event and dynamically cast it to an HtmlInputElement, then get
             // the value of the input and set the password state to it
@@ -95,13 +102,6 @@ fn App() -> Html {
                     .value()
                     .replace('\n', ""),
             );
-
-            // If there is a wrong condition, mark it as discovered
-            if let Some(index) = wrong_index {
-                let mut cloned = discovered.to_vec();
-                cloned[index] = true;
-                discovered.set(cloned);
-            }
         }
     };
 
@@ -114,6 +114,7 @@ fn App() -> Html {
                 <div class="flex flex-col gap-4 relative w-full">
                     <h1 class="text-2xl font-semibold">
                         {"Create a password."}
+                        {format!("{:?}", discovered)}
                     </h1>
                     <Input
                         oninput={password_oninput}
@@ -134,7 +135,24 @@ fn App() -> Html {
                                     </p>
                                 }))
                         }
-
+                        {
+                            conditions
+                                .iter()
+                                .enumerate()
+                                .filter_map(|(index, (condition, message))|
+                                    (
+                                        discovered[index]
+                                            && !condition(&password)
+                                            && wrong_index != Some(index)
+                                            && !password.is_empty()
+                                    )
+                                        .then_some(html! {
+                                            <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
+                                                {message}
+                                            </p>
+                                        })
+                                ).collect::<Vec<_>>()
+                        }
                     </div>
                 </div>
                 <div class="flex flex-col gap-4 relative w-full">
@@ -165,24 +183,6 @@ fn App() -> Html {
                                         {"Passwords do not match."}
                                     </p>
                                 })
-                        }
-                        {
-                            conditions
-                                .iter()
-                                .enumerate()
-                                .filter_map(|(index, (condition, message))|
-                                    (
-                                        discovered[index]
-                                            && !condition(&password)
-                                            && wrong_index != Some(index)
-                                            && !password.is_empty()
-                                    )
-                                        .then_some(html! {
-                                            <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
-                                                {message}
-                                            </p>
-                                        })
-                                ).collect::<Vec<_>>()
                         }
                     </div>
                 </div>
