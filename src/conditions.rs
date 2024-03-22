@@ -77,7 +77,7 @@ pub fn conditions() -> Vec<Condition> {
             let words = &words[..5];
             let words = colour(words, answer);
             (
-                Box::new(move |password: &String| password.contains(answer)),
+                Box::new(move |password: &String| password.to_lowercase().contains(answer)),
                 html! {
                     <div class="flex flex-col gap-4">
                         <p>{"Password must contain the answer to this Wordle."}</p>
