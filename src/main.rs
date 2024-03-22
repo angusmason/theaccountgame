@@ -5,8 +5,7 @@ mod conditions;
 use crate::conditions::conditions;
 use web_sys::HtmlInputElement;
 use yew::{
-    classes, function_component, html, use_memo, use_state, Callback, Html, InputEvent, Properties,
-    Renderer, TargetCast,
+    classes, function_component, html, use_memo, use_state, virtual_dom::VNode, Callback, Html, InputEvent, Properties, Renderer, TargetCast
 };
 
 #[derive(Properties, PartialEq)]
@@ -43,6 +42,20 @@ fn Input(props: &InputProps) -> Html {
                 {props.placeholder.clone()}
             </label>
         </div>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct ErrorProps {
+    message: VNode
+}
+
+#[function_component]
+fn Error(props: &ErrorProps) -> Html {
+    html! {
+        <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
+            {props.message.clone()}
+        </p>
     }
 }
 
@@ -121,9 +134,7 @@ fn App() -> Html {
                             (!password.is_empty())
                                 .then_some(())
                                 .and(wrong.as_ref().map(|message| html! {
-                                    <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
-                                        {message}
-                                    </p>
+                                    <Error message={message} />
                                 }))
                         }
                         {
@@ -138,9 +149,7 @@ fn App() -> Html {
                                             && !password.is_empty()
                                     )
                                         .then_some(html! {
-                                            <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
-                                                {message}
-                                            </p>
+                                            <Error message={message} />
                                         })
                                 ).collect::<Vec<_>>()
                         }
