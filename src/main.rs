@@ -2,10 +2,8 @@
 
 mod conditions;
 
-use std::iter::once;
-
 use crate::conditions::conditions;
-use web_sys::{console::log, js_sys::Array, wasm_bindgen::JsValue, HtmlInputElement};
+use web_sys::HtmlInputElement;
 use yew::{
     classes, function_component, html, use_memo, use_state, Callback, Html, InputEvent, Properties,
     Renderer, TargetCast,
@@ -56,7 +54,7 @@ fn App() -> Html {
     let confirm = use_state(String::new);
     // Generate the conditions
     let conditions = use_memo((), |()| conditions());
-    let discovered = use_state(|| conditions.iter().map(|_| true).collect::<Vec<_>>());
+    let discovered = use_state(|| conditions.iter().map(|_| false).collect::<Vec<_>>());
     // Find the condition that is not met and map it to the message
     let (wrong, wrong_index) = conditions
         .iter()
@@ -74,13 +72,7 @@ fn App() -> Html {
         move |event: InputEvent| {
             // Get the target of the event and dynamically cast it to an HtmlInputElement, then get
             // the value of the input and set the password state to it
-            password.set(
-                event
-                    .target_dyn_into::<HtmlInputElement>()
-                    .unwrap()
-                    .value()
-                    .replace('\n', ""),
-            );
+            password.set(event.target_dyn_into::<HtmlInputElement>().unwrap().value());
             confirm.set(String::new());
             if let Some(index) = wrong_index {
                 let mut cloned = discovered.to_vec();
@@ -114,7 +106,6 @@ fn App() -> Html {
                 <div class="flex flex-col gap-4 relative w-full">
                     <h1 class="text-2xl font-semibold">
                         {"Create a password."}
-                        {format!("{:?}", discovered)}
                     </h1>
                     <Input
                         oninput={password_oninput}
