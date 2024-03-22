@@ -1,3 +1,6 @@
+use std::time::SystemTime;
+
+use chrono::Local;
 use rand::thread_rng;
 use rand::{prelude::SliceRandom, Rng};
 use yew::{html, Html};
@@ -165,6 +168,10 @@ pub fn conditions() -> Vec<Condition> {
                 },
             )
         },
+        (
+            Box::new(|password: &String| password.contains(&Local::now().format("%-H:%M").to_string())),
+            "Password must contain the current time.".into(),
+        )
     ]
 }
 

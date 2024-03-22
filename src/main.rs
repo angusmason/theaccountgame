@@ -3,10 +3,11 @@
 mod conditions;
 
 use crate::conditions::conditions;
+use chrono::Local;
 use web_sys::HtmlInputElement;
 use yew::{
-    classes, function_component, html, use_memo, use_state, virtual_dom::VNode, Callback, Html,
-    InputEvent, Properties, Renderer, TargetCast,
+    classes, function_component, html, use_effect, use_memo, use_state,
+    virtual_dom::VNode, Callback, Html, InputEvent, Properties, Renderer, TargetCast,
 };
 
 #[derive(Properties, PartialEq)]
@@ -69,6 +70,15 @@ fn App() -> Html {
     // Generate the conditions
     let conditions = use_memo((), |()| conditions());
     let discovered = use_state(|| conditions.iter().map(|_| false).collect::<Vec<_>>());
+    let time = use_state(|| Local::now().to_rfc3339());
+    use_effect({
+        move || {
+            let interval = gloo_timers::callback::Interval::new(1000, move || {
+                time.set(Local::now().to_rfc3339());
+            });
+            move || drop(interval)
+        }
+    });
     // Find the condition that is not met and map it to the message
     let (wrong, wrong_index) = conditions
         .iter()
