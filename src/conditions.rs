@@ -142,6 +142,29 @@ pub fn conditions() -> Vec<Condition> {
                 format!("Digits in password must sum to {}.", numbers[number]).into(),
             )
         },
+        {
+            let [r, g, b] = (0..3)
+                .map(|_| thread_rng().gen_range(0..=0xff))
+                .collect::<Vec<_>>()
+                .try_into()
+                .unwrap();
+            let hex = format!("{r:02x}{g:02x}{b:02x}");
+            (
+                {
+                    let hex = hex.clone();
+                    Box::new(move |password: &String| *password.to_lowercase() == hex)
+                },
+                html! {
+                    <div class="flex flex-col gap-4">
+                        <p>{"Password must contain the 24-bit hexadecimal colour of this box."}</p>
+                        <div
+                            class="w-32 h-32 border-slate-600 border-8"
+                            style={format!("background-color: #{hex}")}
+                        />
+                    </div>
+                },
+            )
+        },
     ]
 }
 
