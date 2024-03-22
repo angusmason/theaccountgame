@@ -179,9 +179,7 @@ fn App() -> Html {
                             (confirm != password && !confirm.is_empty())
                                 .then_some(())
                                 .map(|()| html! {
-                                    <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
-                                        {"Passwords do not match."}
-                                    </p>
+                                    <Error message="Passwords do not match." />
                                 })
                         }
                     </div>
