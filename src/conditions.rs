@@ -14,13 +14,6 @@ pub fn conditions() -> Vec<Condition> {
     let numbers: Vec<_> = include_str!("numbers").trim().split('\n').collect();
     vec![
         {
-            let number = thread_rng().gen_range(6..=10);
-            (
-                Box::new(move |password: &String| password.len() >= number),
-                format!("Password must be at least {} characters long.", numbers[number]).into(),
-            )
-        },
-        {
             let number = thread_rng().gen_range(3..=8);
             (
                 Box::new(move |password: &String|
