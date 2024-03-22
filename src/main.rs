@@ -67,7 +67,7 @@ fn App() -> Html {
     let confirm = use_state(String::new);
     // Generate the conditions
     let conditions = use_memo((), |()| conditions());
-    let discovered = use_state(|| conditions.iter().map(|_| true).collect::<Vec<_>>());
+    let discovered = use_state(|| conditions.iter().map(|_| false).collect::<Vec<_>>());
     // Find the condition that is not met and map it to the message
     let (wrong, wrong_index) = conditions
         .iter()
