@@ -5,7 +5,8 @@ mod conditions;
 use crate::conditions::conditions;
 use web_sys::HtmlInputElement;
 use yew::{
-    classes, function_component, html, use_memo, use_state, virtual_dom::VNode, Callback, Html, InputEvent, Properties, Renderer, TargetCast
+    classes, function_component, html, use_memo, use_state, virtual_dom::VNode, Callback, Html,
+    InputEvent, Properties, Renderer, TargetCast,
 };
 
 #[derive(Properties, PartialEq)]
@@ -47,7 +48,7 @@ fn Input(props: &InputProps) -> Html {
 
 #[derive(Properties, PartialEq)]
 struct ErrorProps {
-    message: VNode
+    message: VNode,
 }
 
 #[function_component]
@@ -76,9 +77,8 @@ fn App() -> Html {
             (!condition(&password)).then_some((message.clone(), index))
         })
         .unzip();
-    // Handler for the input event
     let password_oninput = {
-        // Clone the password state so we can move it into the closure
+        // Clone states so we can move them into the closure
         let password = password.clone();
         let confirm = confirm.clone();
         let discovered = discovered.clone();
@@ -87,6 +87,7 @@ fn App() -> Html {
             // the value of the input and set the password state to it
             password.set(event.target_dyn_into::<HtmlInputElement>().unwrap().value());
             confirm.set(String::new());
+            // Mark the unsatisfied condition as discovered
             if let Some(index) = wrong_index {
                 let mut cloned = discovered.to_vec();
                 cloned[index] = true;
@@ -138,6 +139,8 @@ fn App() -> Html {
                                 }))
                         }
                         {
+                            // Filter through the conditions and map the wrong ones to a HTML
+                            // element
                             conditions
                                 .iter()
                                 .enumerate()
