@@ -13,14 +13,13 @@
         },
         {
             "label": "start tailwind",
-            "command": "./tailwindcss",
+            "command": "npx",
             "args": [
-                "-i",
-                "src/styles.css",
-                "-o",
-                "./out.css",
-                "-w",
-                "--minify"
+                "tailwindcss",
+                "-i src/styles.css",
+                "-o out.css",
+                "-m",
+                "-w"
             ]
         },
         {
