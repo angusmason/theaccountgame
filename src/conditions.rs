@@ -175,7 +175,7 @@ pub fn conditions() -> Vec<Condition> {
             "Password must contain the current time in the format HH:MM.".into(),
         ),
         (
-            Box::new(|password: &String| password.contains("blue")),
+            Box::new(|password: &String| password.to_lowercase().contains("blue")),
             "Password must contain my favourite colour.".into(),
         ),
     ]
