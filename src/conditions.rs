@@ -14,6 +14,10 @@ enum Colour {
 pub fn conditions() -> Vec<Condition> {
     let numbers: Vec<_> = include_str!("numbers").trim().split('\n').collect();
     vec![
+        (
+            Box::new(|password: &String| !password.to_lowercase().contains("bean")),
+            "Password may not contain the phrase 'bean'. I don't like beans.".into(),
+        ),
         {
             let number = thread_rng().gen_range(3..=6);
             (
@@ -169,7 +173,11 @@ pub fn conditions() -> Vec<Condition> {
         (
             Box::new(|password: &String| password.contains(&Local::now().format("%-H:%M").to_string())),
             "Password must contain the current time in the format HH:MM.".into(),
-        )
+        ),
+        (
+            Box::new(|password: &String| password.contains("blue")),
+            "Password must contain my favourite colour.".into(),
+        ),
     ]
 }
 
