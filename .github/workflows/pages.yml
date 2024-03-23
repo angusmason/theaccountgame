@@ -29,7 +29,6 @@ jobs:
       uses: actions/setup-node@v4.0.2
       with:
         node-version: 20
-        cache: 'npm'
 
     - name: Build Tailwind CSS
       run: npx tailwindcss -i src/styles.css -o out.css -m -w
