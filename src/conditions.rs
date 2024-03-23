@@ -171,6 +171,10 @@ pub fn conditions() -> Vec<Condition> {
             )
         },
         (
+            Box::new(|password: &String| password.contains("🚡")),
+            "Password must contain the aerial tramway emoji.".into(),
+        ),
+        (
             Box::new(|password: &String| password.contains(&Local::now().format("%-H:%M").to_string())),
             "Password must contain the current time in the format HH:MM.".into(),
         ),
