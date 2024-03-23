@@ -20,7 +20,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     env:
-      TRUNK_BUILD_PUBLIC_URL: '/the-password-game-2'
+      TRUNK_BUILD_PUBLIC_URL: '/createapassword'
 
     runs-on: ubuntu-latest
 
