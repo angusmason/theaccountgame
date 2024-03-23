@@ -6,8 +6,8 @@ use crate::conditions::conditions;
 use chrono::Local;
 use web_sys::HtmlInputElement;
 use yew::{
-    classes, function_component, html, use_effect, use_memo, use_state,
-    virtual_dom::VNode, Callback, Html, InputEvent, Properties, Renderer, TargetCast,
+    classes, function_component, html, use_effect, use_memo, use_state, virtual_dom::VNode,
+    Callback, Html, InputEvent, Properties, Renderer, TargetCast,
 };
 
 #[derive(Properties, PartialEq)]
@@ -72,9 +72,22 @@ fn App() -> Html {
     let discovered = use_state(|| conditions.iter().map(|_| false).collect::<Vec<_>>());
     let time = use_state(|| Local::now().to_rfc3339());
     use_effect({
+        let conditions = conditions.clone();
+        let password = password.clone();
+        let confirm = confirm.clone();
         move || {
             let interval = gloo_timers::callback::Interval::new(1000, move || {
                 time.set(Local::now().to_rfc3339());
+                if conditions
+                    .iter()
+                    .enumerate()
+                    .find_map(|(index, (condition, message))| {
+                        (!condition(&password)).then_some((message.clone(), index))
+                    })
+                    .is_some()
+                {
+                    confirm.set(String::new());
+                }
             });
             move || drop(interval)
         }
