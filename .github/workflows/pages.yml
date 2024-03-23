@@ -46,9 +46,6 @@ jobs:
     - name: Build
       run: trunk build --release
 
-    - name: Deploy
-      run:
-
     - name: Configure GitHub Pages
       uses: actions/configure-pages@v4
 
