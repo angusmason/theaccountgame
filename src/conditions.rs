@@ -16,7 +16,7 @@ pub fn conditions() -> Vec<Condition> {
     vec![
         (
             Box::new(|password: &String| !password.to_lowercase().contains("bean")),
-            "Password may not contain the phrase 'bean'. I don't like beans.".into(),
+            "Password may not contain the phrase 'bean'.".into(),
         ),
         {
             let number = thread_rng().gen_range(3..=6);
