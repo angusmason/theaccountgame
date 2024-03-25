@@ -30,7 +30,7 @@ fn Input(props: &InputProps) -> Html {
                 autocomplete="off"
                 autofocus=true
                 value={props.value.clone()}
-                class="w-full bg-white rounded-xl p-3 text-lg transition-transform focus:outline-none"
+                class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
                 {oninput}
             />
         </div>
