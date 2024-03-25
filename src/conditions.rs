@@ -55,26 +55,30 @@ pub fn conditions() -> Vec<Condition> {
             }),
             "Password must contain a correctly punctuated line from the Australian national anthem."
                 .into(),
-        ),
-        (
-            Box::new(|password: &String| !password.contains("Australia")),
-            "Password may not contain the phrase 'Australia'.".into(),
-        ),
-        {
-            let number = thread_rng().gen_range(23..=35);
+            ),
             (
-                Box::new(move |password: &String|
-                    password
+                Box::new(|password: &String| !password.contains("Australia")),
+                "Password may not contain the phrase 'Australia'.".into(),
+            ),
+            {
+                let number = thread_rng().gen_range(23..=35);
+                (
+                    Box::new(move |password: &String|
+                        password
                         .chars()
                         .filter(|char| char.is_lowercase()).count() == number
-                ),
-                format!(
-                    "Password must contain exactly {} lowercase characters.",
-                    numbers[number]
-                ).into(),
-            )
-        },
-        {
+                    ),
+                    format!(
+                        "Password must contain exactly {} lowercase characters.",
+                        numbers[number]
+                    ).into(),
+                )
+            },
+            (
+                Box::new(|password: &String| password.to_lowercase().contains("")),
+                "Password must contain the Apple symbol.".into(),
+            ),
+            {
             let mut words: Vec<&str> = include_str!("words").split('\n').collect();
             let clone = words.clone();
             let answer = *clone.choose(&mut thread_rng()).unwrap();
@@ -182,10 +186,10 @@ pub fn conditions() -> Vec<Condition> {
             Box::new(|password: &String| password.contains(&Local::now().format("%-H:%M").to_string())),
             "Password must contain the current time in the format HH:MM.".into(),
         ),
-        (
-            Box::new(|password: &String| password.to_lowercase().contains("")),
-            "Password must contain the Apple symbol.".into(),
-        ),
+        // (
+        //     Box::new(|password: &String| password.contains(username)),
+        //     "Password must contain your username.".into(),
+        // ),
         (
             Box::new(|password: &String| password.to_lowercase().contains("Братских народов союз вековой,")),
             "Password must contain the fourteenth line of the Russian national anthem.".into(),

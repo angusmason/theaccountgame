@@ -26,9 +26,8 @@ fn Input(props: &InputProps) -> Html {
             <input
                 type="password"
                 id={props.id.clone()}
-                placeholder=""
+                placeholder="Password"
                 autocomplete="off"
-                autofocus=true
                 value={props.value.clone()}
                 class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
                 {oninput}
@@ -53,6 +52,8 @@ fn Error(props: &ErrorProps) -> Html {
 
 #[function_component]
 fn App() -> Html {
+    // State to store the username
+    let username = use_state(String::new);
     // State to store the password
     let password = use_state(String::new);
     // State to store the confirmation password
@@ -63,6 +64,7 @@ fn App() -> Html {
     let time = use_state(|| Local::now().to_rfc3339());
     use_effect({
         let conditions = conditions.clone();
+        let username = username.clone();
         let password = password.clone();
         let confirm = confirm.clone();
         move || {
@@ -90,6 +92,15 @@ fn App() -> Html {
             (!condition(&password)).then_some((message.clone(), index))
         })
         .unzip();
+    let username_oninput = {
+        // Clone states so we can move them into the closure
+        let username = username.clone();
+        move |event: InputEvent| {
+            // Get the target of the event and dynamically cast it to an HtmlInputElement, then get
+            // the value of the input and set the username state to it
+            username.set(event.target_dyn_into::<HtmlInputElement>().unwrap().value());
+        }
+    };
     let password_oninput = {
         // Clone states so we can move them into the closure
         let password = password.clone();
@@ -132,8 +143,16 @@ fn App() -> Html {
             >
                 <div class="flex flex-col gap-4 relative w-full">
                     <h1 class="text-2xl font-semibold">
-                        {"Create a password."}
+                        {"Create an account."}
                     </h1>
+                    <input
+                        oninput={username_oninput}
+                        placeholder="Username"
+                        id="username"
+                        autocomplete="off"
+                        autofocus=true
+                        class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
+                    />
                     <Input
                         oninput={password_oninput}
                         id="password"
