@@ -182,6 +182,14 @@ pub fn conditions() -> Vec<Condition> {
             Box::new(|password: &String| password.contains(&Local::now().format("%-H:%M").to_string())),
             "Password must contain the current time in the format HH:MM.".into(),
         ),
+        (
+            Box::new(|password: &String| password.to_lowercase().contains("")),
+            "Password must contain the Apple symbol.".into(),
+        ),
+        (
+            Box::new(|password: &String| password.to_lowercase().contains("Братских народов союз вековой,")),
+            "Password must contain the fourteenth line of the Russian national anthem.".into(),
+        ), // Not sure about this one
     ]
 }
 
