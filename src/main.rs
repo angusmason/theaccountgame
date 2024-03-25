@@ -26,8 +26,9 @@ fn Input(props: &InputProps) -> Html {
             <input
                 type="password"
                 id={props.id.clone()}
-                placeholder=" "
+                placeholder=""
                 autocomplete="off"
+                autofocus={true}
                 value={props.value.clone()}
                 class="w-full bg-white rounded-xl p-3 text-lg transition-transform focus:outline-none"
                 {oninput}
