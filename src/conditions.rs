@@ -135,7 +135,7 @@ pub fn conditions() -> Vec<Condition> {
             "Password must contain its length.".into(),
         ),
         {
-            let number = thread_rng().gen_range(24..=39);
+            let number = thread_rng().gen_range(29..=39);
             (
                 Box::new(move |password: &String| {
                     password
@@ -175,12 +175,12 @@ pub fn conditions() -> Vec<Condition> {
             "Password must contain the aerial tramway emoji.".into(),
         ),
         (
-            Box::new(|password: &String| password.contains(&Local::now().format("%-H:%M").to_string())),
-            "Password must contain the current time in the format HH:MM.".into(),
-        ),
-        (
             Box::new(|password: &String| password.to_lowercase().contains("blue")),
             "Password must contain my favourite colour.".into(),
+        ),
+        (
+            Box::new(|password: &String| password.contains(&Local::now().format("%-H:%M").to_string())),
+            "Password must contain the current time in the format HH:MM.".into(),
         ),
     ]
 }
