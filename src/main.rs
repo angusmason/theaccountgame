@@ -28,7 +28,6 @@ fn Input(props: &InputProps) -> Html {
                 id={props.id.clone()}
                 placeholder=""
                 autocomplete="off"
-                autofocus=true
                 value={props.value.clone()}
                 class="w-full bg-white rounded-xl p-3 text-lg border-black border p-2 transition-transform focus:outline-none"
                 {oninput}
