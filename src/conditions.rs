@@ -47,10 +47,6 @@ pub fn conditions() -> Vec<Condition> {
             )
         },
         (
-            Box::new(|password: &String| password.contains("🚡")),
-            "Password must contain the aerial tramway emoji.".into(),
-        ),
-        (
             Box::new(|password: &String| {
                 include_str!("anthem")
                     .trim()
@@ -63,6 +59,10 @@ pub fn conditions() -> Vec<Condition> {
             (
                 Box::new(|password: &String| !password.contains("Australia")),
                 "Password may not contain the phrase 'Australia'.".into(),
+            ),
+            (
+                Box::new(|password: &String| password.contains("🚡")),
+                "Password must contain the aerial tramway emoji.".into(),
             ),
             {
                 let number = thread_rng().gen_range(23..=35);
@@ -80,7 +80,7 @@ pub fn conditions() -> Vec<Condition> {
             },
             (
                 Box::new(|password: &String| password.to_lowercase().contains("")),
-                "Password must contain the Apple symbol.".into(),
+                "Password must contain the Apple logo.".into(),
             ),
             {
             let mut words: Vec<&str> = include_str!("words").split('\n').collect();

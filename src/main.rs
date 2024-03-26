@@ -119,7 +119,7 @@ fn App() -> Html {
 
     // Return some HTML
     html! {
-        <main class="flex justify-center grow h-full bg-gray-100 bg-fixed">
+        <main class="flex justify-center grow h-full">
             <div
                 class="flex flex-col items-center justify-center h-full max-w-md w-full px-4 gap-4"
             >
