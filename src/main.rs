@@ -13,27 +13,9 @@ use yew::{
 #[derive(Properties, PartialEq)]
 struct InputProps {
     oninput: Callback<InputEvent>,
-    id: String,
+    id: String, 
     placeholder: String,
     value: String,
-}
-
-#[function_component]
-fn Input(props: &InputProps) -> Html {
-    let oninput = props.oninput.clone();
-    html! {
-        <div class="relative">
-            <input
-                type="password"
-                id={props.id.clone()}
-                placeholder=""
-                autocomplete="off"
-                value={props.value.clone()}
-                class="w-full bg-white rounded-xl p-3 text-lg border-black border p-2 transition-transform focus:outline-none"
-                {oninput}
-            />
-        </div>
-    }
 }
 
 #[derive(Properties, PartialEq)]
@@ -52,6 +34,8 @@ fn Error(props: &ErrorProps) -> Html {
 
 #[function_component]
 fn App() -> Html {
+    // State to store the username
+    let username = use_state(String::new);
     // State to store the password
     let password = use_state(String::new);
     // State to store the confirmation password
@@ -62,6 +46,7 @@ fn App() -> Html {
     let time = use_state(|| Local::now().to_rfc3339());
     use_effect({
         let conditions = conditions.clone();
+        let username = username.clone();
         let password = password.clone();
         let confirm = confirm.clone();
         move || {
@@ -89,6 +74,15 @@ fn App() -> Html {
             (!condition(&password)).then_some((message.clone(), index))
         })
         .unzip();
+    let username_oninput = {
+        // Clone states so we can move them into the closure
+        let username = username.clone();
+        move |event: InputEvent| {
+            // Get the target of the event and dynamically cast it to an HtmlInputElement, then get
+            // the value of the input and set the username state to it
+            username.set(event.target_dyn_into::<HtmlInputElement>().unwrap().value());
+        }
+    };
     let password_oninput = {
         // Clone states so we can move them into the closure
         let password = password.clone();
@@ -131,15 +125,46 @@ fn App() -> Html {
             >
                 <div class="flex flex-col gap-4 relative w-full">
                     <h1 class="text-2xl font-semibold">
-                        {"Create a password."}
+                        {"Create an account."}
                     </h1>
-                    <Input
-                        oninput={password_oninput}
-                        id="password"
-                        placeholder="Password"
-                        value={(*password).clone()}
+                    <input
+                        oninput={username_oninput}
+                        placeholder="Username"
+                        id="username"
+                        autocomplete="off"
+                        class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
                     />
-                    <div class="flex flex-col gap-4 absolute top-full py-4 inset-x-0">
+                    <input
+                        oninput={password_oninput}
+                        placeholder="Password"
+                        type="password"
+                        id="password"
+                        autocomplete="off"
+                        class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
+                    />
+                </div>
+                <div class="flex flex-col gap-4 relative w-full">
+                    <div class={classes!(
+                        "flex", "flex-col", "gap-4",
+                        wrong.is_some().then_some("hidden")
+                    )}>
+                        <input
+                            oninput={confirm_oninput}
+                            placeholder="Confirm password"
+                            type="password"
+                            id="confirm"
+                            autocomplete="off"
+                            class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
+                        />
+                    </div>
+                        <button
+                            disabled={(confirm != password) | (password.is_empty())}
+                            class="disabled:opacity-25 disabled:pointer-events-none bg-white border-gray-700 border p-2 rounded-xl
+                                hover:bg-gray-200 transition"
+                        >
+                            {"Submit"}
+                        </button>
+                        <div class="flex flex-col gap-4 absolute top-full py-4 inset-x-0">
                         {
                             // Map the wrong message to a HTML element
                             // If it was Some, it will map to a paragraph with the message
@@ -168,26 +193,6 @@ fn App() -> Html {
                                         })
                                 ).collect::<Vec<_>>()
                         }
-                    </div>
-                </div>
-                <div class="flex flex-col gap-4 relative w-full">
-                    <div class={classes!(
-                        "flex", "flex-col", "gap-4",
-                        wrong.is_some().then_some("hidden")
-                    )}>
-                        <Input
-                            oninput={confirm_oninput}
-                            id="confirm"
-                            placeholder="Confirm password"
-                            value={(*confirm).clone()}
-                        />
-                        <button
-                            disabled={confirm != password}
-                            class="disabled:opacity-20 bg-white border-gray-700 border p-2 rounded-xl
-                                hover:bg-gray-200 transition"
-                        >
-                            {"Submit"}
-                        </button>
                     </div>
                     <div class="flex flex-col gap-4 absolute top-full pt-4 inset-x-0">
                         {

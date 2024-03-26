@@ -59,26 +59,30 @@ pub fn conditions() -> Vec<Condition> {
             }),
             "Password must contain a correctly punctuated line from the Australian national anthem."
                 .into(),
-        ),
-        (
-            Box::new(|password: &String| !password.contains("Australia")),
-            "Password may not contain the phrase 'Australia'.".into(),
-        ),
-        {
-            let number = thread_rng().gen_range(23..=35);
+            ),
             (
-                Box::new(move |password: &String|
-                    password
+                Box::new(|password: &String| !password.contains("Australia")),
+                "Password may not contain the phrase 'Australia'.".into(),
+            ),
+            {
+                let number = thread_rng().gen_range(23..=35);
+                (
+                    Box::new(move |password: &String|
+                        password
                         .chars()
                         .filter(|char| char.is_lowercase()).count() == number
-                ),
-                format!(
-                    "Password must contain exactly {} lowercase characters.",
-                    numbers[number]
-                ).into(),
-            )
-        },
-        {
+                    ),
+                    format!(
+                        "Password must contain exactly {} lowercase characters.",
+                        numbers[number]
+                    ).into(),
+                )
+            },
+            (
+                Box::new(|password: &String| password.to_lowercase().contains("")),
+                "Password must contain the Apple symbol.".into(),
+            ),
+            {
             let mut words: Vec<&str> = include_str!("words").split('\n').collect();
             let clone = words.clone();
             let answer = *clone.choose(&mut thread_rng()).unwrap();
