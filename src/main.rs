@@ -13,28 +13,28 @@ use yew::{
 #[derive(Properties, PartialEq)]
 struct InputProps {
     oninput: Callback<InputEvent>,
-    id: String,
+    id: String, 
     placeholder: String,
     value: String,
 }
 
-#[function_component]
-fn Input(props: &InputProps) -> Html {
-    let oninput = props.oninput.clone();
-    html! {
-        <div class="relative">
-            <input
-                type="password"
-                id={props.id.clone()}
-                placeholder="Password"
-                autocomplete="off"
-                value={props.value.clone()}
-                class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
-                {oninput}
-            />
-        </div>
-    }
-}
+// #[function_component]
+// fn Input(props: &InputProps) -> Html {
+//     let oninput = props.oninput.clone();
+//     html! {
+//         <div class="relative">
+//             <input
+//                 type="password"
+//                 id={props.id.clone()}
+//                 placeholder="Password"
+//                 autocomplete="off"
+//                 value={props.value.clone()}
+//                 class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
+//                 {oninput}
+//             />
+//         </div>
+//     }
+// }
 
 #[derive(Properties, PartialEq)]
 struct ErrorProps {
@@ -150,16 +150,39 @@ fn App() -> Html {
                         placeholder="Username"
                         id="username"
                         autocomplete="off"
-                        autofocus=true
                         class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
                     />
-                    <Input
+                    <input
                         oninput={password_oninput}
-                        id="password"
                         placeholder="Password"
-                        value={(*password).clone()}
+                        type="password"
+                        id="password"
+                        autocomplete="off"
+                        class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
                     />
-                    <div class="flex flex-col gap-4 absolute top-full py-4 inset-x-0">
+                </div>
+                <div class="flex flex-col gap-4 relative w-full">
+                    <div class={classes!(
+                        "flex", "flex-col", "gap-4",
+                        wrong.is_some().then_some("hidden")
+                    )}>
+                        <input
+                            oninput={confirm_oninput}
+                            placeholder="Confirm password"
+                            type="password"
+                            id="confirm"
+                            autocomplete="off"
+                            class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
+                        />
+                    </div>
+                        <button
+                            disabled={(confirm != password) | (password.is_empty())}
+                            class="disabled:bg-gray-100 bg-white border-gray-700 border p-2 rounded-xl
+                                hover:bg-gray-200 transition"
+                        >
+                            {"Submit"}
+                        </button>
+                        <div class="flex flex-col gap-4 absolute top-full py-4 inset-x-0">
                         {
                             // Map the wrong message to a HTML element
                             // If it was Some, it will map to a paragraph with the message
@@ -188,26 +211,6 @@ fn App() -> Html {
                                         })
                                 ).collect::<Vec<_>>()
                         }
-                    </div>
-                </div>
-                <div class="flex flex-col gap-4 relative w-full">
-                    <div class={classes!(
-                        "flex", "flex-col", "gap-4",
-                        wrong.is_some().then_some("hidden")
-                    )}>
-                        <Input
-                            oninput={confirm_oninput}
-                            id="confirm"
-                            placeholder="Confirm password"
-                            value={(*confirm).clone()}
-                        />
-                        <button
-                            disabled={confirm != password}
-                            class="disabled:opacity-20 bg-white border-gray-700 border p-2 rounded-xl
-                                hover:bg-gray-200 transition"
-                        >
-                            {"Submit"}
-                        </button>
                     </div>
                     <div class="flex flex-col gap-4 absolute top-full pt-4 inset-x-0">
                         {
