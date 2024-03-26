@@ -177,7 +177,7 @@ fn App() -> Html {
                     </div>
                         <button
                             disabled={(confirm != password) | (password.is_empty())}
-                            class="disabled:bg-gray-100 bg-white border-gray-700 border p-2 rounded-xl
+                            class="disabled:opacity-25 disabled:pointer-events-none bg-white border-gray-700 border p-2 rounded-xl
                                 hover:bg-gray-200 transition"
                         >
                             {"Submit"}
