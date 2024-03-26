@@ -18,24 +18,6 @@ struct InputProps {
     value: String,
 }
 
-// #[function_component]
-// fn Input(props: &InputProps) -> Html {
-//     let oninput = props.oninput.clone();
-//     html! {
-//         <div class="relative">
-//             <input
-//                 type="password"
-//                 id={props.id.clone()}
-//                 placeholder="Password"
-//                 autocomplete="off"
-//                 value={props.value.clone()}
-//                 class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
-//                 {oninput}
-//             />
-//         </div>
-//     }
-// }
-
 #[derive(Properties, PartialEq)]
 struct ErrorProps {
     message: VNode,
@@ -44,7 +26,7 @@ struct ErrorProps {
 #[function_component]
 fn Error(props: &ErrorProps) -> Html {
     html! {
-        <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4">
+        <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4 border-red-500 border p-2">
             {props.message.clone()}
         </p>
     }

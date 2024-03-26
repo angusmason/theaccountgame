@@ -47,6 +47,10 @@ pub fn conditions() -> Vec<Condition> {
             )
         },
         (
+            Box::new(|password: &String| password.contains("🚡")),
+            "Password must contain the aerial tramway emoji.".into(),
+        ),
+        (
             Box::new(|password: &String| {
                 include_str!("anthem")
                     .trim()
@@ -175,22 +179,17 @@ pub fn conditions() -> Vec<Condition> {
             )
         },
         (
-            Box::new(|password: &String| password.contains("🚡")),
-            "Password must contain the aerial tramway emoji.".into(),
-        ),
-        (
             Box::new(|password: &String| password.to_lowercase().contains("blue")),
             "Password must contain my favourite colour.".into(),
         ),
         (
             Box::new(|password: &String| password.contains(&Local::now().format("%-H:%M").to_string())),
             "Password must contain the current time in the format HH:MM.".into(),
-            // "Password must contain the current AWST time in the format HH:MM.".into(),
-        ), // Make this for the AWST time zone
-        // (
-        //     Box::new(|password: &String| password.contains(username)),
-        //     "Password must contain your username.".into(),
-        // ),
+        ),
+        (
+            Box::new(|password: &String| password.to_lowercase().contains("")),
+            "Password must contain the Apple symbol.".into(),
+        ),
     ]
 }
 
