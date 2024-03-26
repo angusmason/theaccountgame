@@ -47,6 +47,10 @@ pub fn conditions() -> Vec<Condition> {
             )
         },
         (
+            Box::new(|password: &String| password.contains("🚡")),
+            "Password must contain the aerial tramway emoji.".into(),
+        ),
+        (
             Box::new(|password: &String| {
                 include_str!("anthem")
                     .trim()
@@ -170,10 +174,6 @@ pub fn conditions() -> Vec<Condition> {
                 },
             )
         },
-        (
-            Box::new(|password: &String| password.contains("🚡")),
-            "Password must contain the aerial tramway emoji.".into(),
-        ),
         (
             Box::new(|password: &String| password.to_lowercase().contains("blue")),
             "Password must contain my favourite colour.".into(),
