@@ -18,7 +18,7 @@ struct ErrorProps {
 #[function_component]
 fn Error(props: &ErrorProps) -> Html {
     html! {
-        <p class="text-1xl text-red-500 bg-red-200 rounded-xl border-red-500 border p-2">
+        <p class="text-1xl text-red-500 bg-red-200 rounded-xl border-red-500 border p-4">
             {props.message.clone()}
         </p>
     }
