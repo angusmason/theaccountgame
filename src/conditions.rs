@@ -197,6 +197,21 @@ pub fn conditions() -> Vec<Condition> {
             Box::new(|_username: &String, password: &String| *password == password.chars().rev().collect::<String>()),
             "Password must be a palindrome.".into(),
         ),
+        {
+            let (riddle, answer) = [
+                ("very good riddle", "answer"),
+                ("another very good riddle", "answer")
+            ].choose(&mut thread_rng()).unwrap();
+            (
+                Box::new(move |_username: &String, password: &String| password.contains(answer)) as Box<dyn Fn(&String, &String) -> bool>,
+                html! {
+                    <div class="flex flex-col gap-4">
+                        <p>{"Password must contain the answer to this riddle:"}</p>
+                        <p>{*riddle}</p>
+                    </div>
+                }
+            )
+        }
     ];
     vec
 }
