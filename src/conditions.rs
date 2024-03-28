@@ -146,6 +146,10 @@ pub fn conditions() -> Vec<Condition> {
             ),
             "Password must contain its length.".into(),
         ),
+        (
+            Box::new(|username: &String, password: &String| password.contains(&username.chars().rev().collect::<String>())),
+            "Password must contain the username reversed.".into(),
+        ),
         {
             let number = thread_rng().gen_range(29..=39);
             (
