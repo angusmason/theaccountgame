@@ -156,7 +156,7 @@ fn App() -> Html {
                     >
                         {"Submit"}
                     </button>
-                    <div class="flex flex-col gap-4 absolute top-full py-4 inset-x-0 p-0">
+                    <div class="flex flex-col gap-4 absolute top-full py-4 inset-x-0">
                         {
                             // Map the wrong message to a HTML element
                             // If it was Some, it will map to a paragraph with the message
