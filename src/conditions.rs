@@ -233,13 +233,13 @@ pub fn conditions() -> Vec<Condition> {
         ),
         {
             let (riddle, answer) = [
-                ("very good riddle", "answer"),
+                ("What do you call a person that's struggling to set a password?", "idiot"),
                 ("another very good riddle", "answer")
             ].choose(&mut thread_rng()).unwrap();
             (
                 Box::new(
                     move |_username: &String, password: &String|
-                        password.contains(answer)
+                        password.to_lowercase().contains(answer)
                 ) as Box<dyn Fn(&String, &String) -> bool>,
                 html! {
                     <div class="flex flex-col gap-4">

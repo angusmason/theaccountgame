@@ -149,14 +149,14 @@ fn App() -> Html {
                             class="w-full bg-white rounded-xl text-lg border-gray-700 border p-3 transition-transform focus:outline-none"
                         />
                     </div>
-                        <button
-                            disabled={(confirm != password) | (password.is_empty())}
-                            class="disabled:opacity-25 disabled:pointer-events-none bg-white border-gray-700 border p-2 rounded-xl
-                                hover:bg-gray-200 transition"
-                        >
-                            {"Submit"}
-                        </button>
-                        <div class="flex flex-col gap-4 absolute top-full py-4 inset-x-0">
+                    <button
+                        disabled={(confirm != password) | (password.is_empty())}
+                        class="disabled:opacity-25 disabled:pointer-events-none bg-white border-gray-700 border rounded-xl
+                            hover:bg-gray-200 transition"
+                    >
+                        {"Submit"}
+                    </button>
+                    <div class="flex flex-col gap-4 absolute top-full py-4 inset-x-0">
                         {
                             // Map the wrong message to a HTML element
                             // If it was Some, it will map to a paragraph with the message
