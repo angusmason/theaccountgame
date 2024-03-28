@@ -58,20 +58,20 @@ pub fn conditions() -> Vec<Condition> {
             }),
             "Password must contain a correctly punctuated line from the Australian national anthem."
                 .into(),
-            ),
-            (
-                Box::new(|_username: &String, password: &String| !password.contains("Australia")),
-                "Password may not contain the phrase 'Australia'.".into(),
-            ),
-            (
-                Box::new(|_username: &String, password: &String| password.contains('🚡')),
-                "Password must contain the aerial tramway emoji.".into(),
-            ),
-            (
-                Box::new(|_username: &String, password: &String| password.to_lowercase().contains('')),
-                "Password must contain the Apple logo.".into(),
-            ),
-            {
+        ),
+        (
+            Box::new(|_username: &String, password: &String| !password.contains("Australia")),
+            "Password may not contain the phrase 'Australia'.".into(),
+        ),
+        (
+            Box::new(|_username: &String, password: &String| password.contains('🚡')),
+            "Password must contain the aerial tramway emoji.".into(),
+        ),
+        (
+            Box::new(|_username: &String, password: &String| password.to_lowercase().contains('')),
+            "Password must contain the Apple logo.".into(),
+        ),
+        {
             let mut words: Vec<&str> = include_str!("words").split('\n').collect();
             let clone = words.clone();
             let answer = *clone.choose(&mut thread_rng()).unwrap();
@@ -131,6 +131,10 @@ pub fn conditions() -> Vec<Condition> {
             Box::new(|_username: &String, password: &String| password.contains(password.len().to_string().as_str())),
             "Password must contain its length.".into(),
         ),
+        (
+            Box::new(|username: &String, password: &String| password.contains(&username.chars().rev().collect::<String>())),
+            "Password must contain the username reversed.".into(),
+        ),
         {
             let number = thread_rng().gen_range(29..=39);
             (
@@ -174,10 +178,6 @@ pub fn conditions() -> Vec<Condition> {
         (
             Box::new(|_username: &String, password: &String| password.contains(&Local::now().format("%-H:%M").to_string())),
             "Password must contain the current time in the format HH:MM.".into(),
-        ),
-        (
-            Box::new(|username: &String, password: &String| password.contains(&username.chars().rev().collect::<String>())),
-            "Password must contain the username reversed.".into(),
         ),
         {
             let number = thread_rng().gen_range(46..=58);
