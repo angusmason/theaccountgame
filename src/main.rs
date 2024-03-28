@@ -124,7 +124,7 @@ fn App() -> Html {
                         placeholder="Username"
                         id="username"
                         autocomplete="off"
-                        class="w-full bg-white rounded-xl text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
+                        class="w-full bg-white rounded-xl text-lg border-gray-700 border p-3 transition-transform focus:outline-none"
                     />
                     <input
                         oninput={password_oninput}
@@ -132,7 +132,7 @@ fn App() -> Html {
                         type="password"
                         id="password"
                         autocomplete="off"
-                        class="w-full bg-white rounded-xl text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
+                        class="w-full bg-white rounded-xl text-lg border-gray-700 border p-3 transition-transform focus:outline-none"
                     />
                 </div>
                 <div class="flex flex-col gap-4 relative w-full">
@@ -146,7 +146,7 @@ fn App() -> Html {
                             type="password"
                             id="confirm"
                             autocomplete="off"
-                            class="w-full bg-white rounded-xl text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
+                            class="w-full bg-white rounded-xl text-lg border-gray-700 border p-3 transition-transform focus:outline-none"
                         />
                     </div>
                         <button
