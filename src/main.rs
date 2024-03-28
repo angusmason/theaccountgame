@@ -6,17 +6,9 @@ use crate::conditions::conditions;
 use chrono::Local;
 use web_sys::HtmlInputElement;
 use yew::{
-    classes, function_component, html, use_effect, use_memo, use_state, virtual_dom::VNode,
-    Callback, Html, InputEvent, Properties, Renderer, TargetCast,
+    classes, function_component, html, use_effect, use_memo, use_state, virtual_dom::VNode, Html, InputEvent, Properties, Renderer, TargetCast,
 };
 
-#[derive(Properties, PartialEq)]
-struct InputProps {
-    oninput: Callback<InputEvent>,
-    id: String, 
-    placeholder: String,
-    value: String,
-}
 
 #[derive(Properties, PartialEq)]
 struct ErrorProps {
@@ -26,7 +18,7 @@ struct ErrorProps {
 #[function_component]
 fn Error(props: &ErrorProps) -> Html {
     html! {
-        <p class="text-1xl text-red-500 bg-red-200 rounded-xl p-4 border-red-500 border p-2">
+        <p class="text-1xl text-red-500 bg-red-200 rounded-xl border-red-500 border p-2">
             {props.message.clone()}
         </p>
     }
@@ -56,7 +48,7 @@ fn App() -> Html {
                     .iter()
                     .enumerate()
                     .find_map(|(index, (condition, message))| {
-                        (!condition(&password)).then_some((message.clone(), index))
+                        (!condition(&username, &password)).then_some((message.clone(), index))
                     })
                     .is_some()
                 {
@@ -71,7 +63,7 @@ fn App() -> Html {
         .iter()
         .enumerate()
         .find_map(|(index, (condition, message))| {
-            (!condition(&password)).then_some((message.clone(), index))
+            (!condition(&username, &password)).then_some((message.clone(), index))
         })
         .unzip();
     let username_oninput = {
@@ -132,7 +124,7 @@ fn App() -> Html {
                         placeholder="Username"
                         id="username"
                         autocomplete="off"
-                        class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
+                        class="w-full bg-white rounded-xl text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
                     />
                     <input
                         oninput={password_oninput}
@@ -140,7 +132,7 @@ fn App() -> Html {
                         type="password"
                         id="password"
                         autocomplete="off"
-                        class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
+                        class="w-full bg-white rounded-xl text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
                     />
                 </div>
                 <div class="flex flex-col gap-4 relative w-full">
@@ -154,7 +146,7 @@ fn App() -> Html {
                             type="password"
                             id="confirm"
                             autocomplete="off"
-                            class="w-full bg-white rounded-xl p-3 text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
+                            class="w-full bg-white rounded-xl text-lg border-gray-700 border p-2 transition-transform focus:outline-none"
                         />
                     </div>
                         <button
@@ -184,7 +176,7 @@ fn App() -> Html {
                                 .filter_map(|(index, (condition, message))|
                                     (
                                         discovered[index]
-                                            && !condition(&password)
+                                            && !condition(&username, &password)
                                             && wrong_index != Some(index)
                                             && !password.is_empty()
                                     )

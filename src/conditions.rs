@@ -3,7 +3,7 @@ use rand::thread_rng;
 use rand::{prelude::SliceRandom, Rng};
 use yew::{html, Html};
 
-pub type Condition = (Box<dyn Fn(&String) -> bool>, Html);
+pub type Condition = (Box<dyn Fn(&String, &String) -> bool>, Html);
 enum Colour {
     Grey,
     Yellow,
@@ -13,15 +13,18 @@ enum Colour {
 #[allow(clippy::too_many_lines)]
 pub fn conditions() -> Vec<Condition> {
     let numbers: Vec<_> = include_str!("numbers").trim().split('\n').collect();
-    vec![
+    let vec = vec![
         (
-            Box::new(|password: &String| !password.to_lowercase().contains("bean")),
+            Box::new(
+                |_username: &String, password: &String|
+                    !password.to_lowercase().contains("bean")
+            ) as Box<dyn Fn(&String, &String) -> bool>,
             "Password may not contain the phrase 'bean'.".into(),
         ),
         {
             let number = thread_rng().gen_range(3..=6);
             (
-                Box::new(move |password: &String|
+                Box::new(move |_username: &String, password: &String|
                     password
                         .chars()
                         .filter(|char| char.is_uppercase()).count() >= number
@@ -35,7 +38,7 @@ pub fn conditions() -> Vec<Condition> {
         {
             let number = thread_rng().gen_range(3..=6);
             (
-                Box::new(move |password: &String|
+                Box::new(move |_username: &String, password: &String|
                     password
                         .chars()
                         .filter(char::is_ascii_digit).count() >= number
@@ -47,7 +50,7 @@ pub fn conditions() -> Vec<Condition> {
             )
         },
         (
-            Box::new(|password: &String| {
+            Box::new(|_username: &String, password: &String| {
                 include_str!("anthem")
                     .trim()
                     .split('\n')
@@ -57,29 +60,15 @@ pub fn conditions() -> Vec<Condition> {
                 .into(),
             ),
             (
-                Box::new(|password: &String| !password.contains("Australia")),
+                Box::new(|_username: &String, password: &String| !password.contains("Australia")),
                 "Password may not contain the phrase 'Australia'.".into(),
             ),
             (
-                Box::new(|password: &String| password.contains("🚡")),
+                Box::new(|_username: &String, password: &String| password.contains('🚡')),
                 "Password must contain the aerial tramway emoji.".into(),
             ),
-            {
-                let number = thread_rng().gen_range(23..=35);
-                (
-                    Box::new(move |password: &String|
-                        password
-                        .chars()
-                        .filter(|char| char.is_lowercase()).count() == number
-                    ),
-                    format!(
-                        "Password must contain exactly {} lowercase characters.",
-                        numbers[number]
-                    ).into(),
-                )
-            },
             (
-                Box::new(|password: &String| password.to_lowercase().contains("")),
+                Box::new(|_username: &String, password: &String| password.to_lowercase().contains('')),
                 "Password must contain the Apple logo.".into(),
             ),
             {
@@ -90,7 +79,7 @@ pub fn conditions() -> Vec<Condition> {
             let words = &words[..5];
             let words = colour(words, answer);
             (
-                Box::new(move |password: &String| password.to_lowercase().contains(answer)),
+                Box::new(move |_username: &String, password: &String| password.to_lowercase().contains(answer)),
                 html! {
                     <div class="flex flex-col gap-4">
                         <p>{"Password must contain the answer to this Wordle."}</p>
@@ -139,13 +128,13 @@ pub fn conditions() -> Vec<Condition> {
             )
         },
         (
-            Box::new(|password: &String| password.contains(password.len().to_string().as_str())),
+            Box::new(|_username: &String, password: &String| password.contains(password.len().to_string().as_str())),
             "Password must contain its length.".into(),
         ),
         {
             let number = thread_rng().gen_range(29..=39);
             (
-                Box::new(move |password: &String| {
+                Box::new(move |_username: &String, password: &String| {
                     password
                         .chars()
                         .filter_map(|char| char.to_string().parse::<usize>().ok())
@@ -165,7 +154,7 @@ pub fn conditions() -> Vec<Condition> {
             (
                 {
                     let hex = hex.clone();
-                    Box::new(move |password: &String| password.to_lowercase().contains(&hex))
+                    Box::new(move |_username: &String, password: &String| password.to_lowercase().contains(&hex))
                 },
                 html! {
                     <div class="flex flex-col gap-4">
@@ -179,18 +168,37 @@ pub fn conditions() -> Vec<Condition> {
             )
         },
         (
-            Box::new(|password: &String| password.to_lowercase().contains("blue")),
+            Box::new(|_username: &String, password: &String| password.to_lowercase().contains("blue")),
             "Password must contain my favourite colour.".into(),
         ),
         (
-            Box::new(|password: &String| password.contains(&Local::now().format("%-H:%M").to_string())),
+            Box::new(|_username: &String, password: &String| password.contains(&Local::now().format("%-H:%M").to_string())),
             "Password must contain the current time in the format HH:MM.".into(),
         ),
         (
-            Box::new(|password: &String| password.to_lowercase().contains("")),
-            "Password must contain the Apple symbol.".into(),
+            Box::new(|username: &String, password: &String| password.contains(&username.chars().rev().collect::<String>())),
+            "Password must contain the username reversed.".into(),
         ),
-    ]
+        {
+            let number = thread_rng().gen_range(46..=58);
+            (
+                Box::new(move |_username: &String, password: &String|
+                    password
+                    .chars()
+                    .filter(|char| char.is_lowercase()).count() == number
+                ),
+                format!(
+                    "Password must contain exactly {} lowercase characters.",
+                    numbers[number]
+                ).into(),
+            )
+        },
+        (
+            Box::new(|_username: &String, password: &String| *password == password.chars().rev().collect::<String>()),
+            "Password must be a palindrome.".into(),
+        ),
+    ];
+    vec
 }
 
 fn colour(words: &[&str], answer: &str) -> Vec<Vec<(Colour, char)>> {
