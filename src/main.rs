@@ -125,106 +125,104 @@ fn App() -> Html {
             <div
                 class="flex flex-col items-center justify-center h-full max-w-md w-full px-4 gap-4"
             >
-                <>
-                    <div class="flex flex-col gap-4 relative w-full">
-                        <h1 class="text-2xl font-semibold">
-                            {"Create an account."}
-                        </h1>
-                        {
-                            if *won {
-                                html! {
-                                    <div class="flex flex-col gap-4 relative w-full">
-                                        <p class="text-lg text-red-500 bg-red-200 rounded-xl border-red-500 border p-4">
-                                            {"Error processing request. Try reloading the web page."}
-                                        </p>
-                                    </div>
-                                }
-                            }
-                            else {
-                                html! {
-                                    <></>
-                                }
-                            }
+                {
+                    if *won {
+                        html! {
+                            <div class="flex flex-col gap-4 relative w-full">
+                                <p class="text-lg text-red-500 bg-red-200 rounded-xl border-red-500 border p-4">
+                                    {"Error processing request. Try reloading the web page."}
+                                </p>
+                            </div>
                         }
-                        <input
-                            oninput={username_oninput}
-                            placeholder="Username"
-                            id="username"
-                            autocomplete="off"
-                            class="w-full bg-white rounded-xl text-lg border-gray-700 border p-3 transition-transform focus:outline-none"
-                        />
-                        <input
-                            oninput={password_oninput}
-                            placeholder="Password"
-                            type="password"
-                            id="password"
-                            autocomplete="off"
-                            class="w-full bg-white rounded-xl text-lg border-gray-700 border p-3 transition-transform focus:outline-none"
-                        />
-                    </div>
-                    <div class="flex flex-col gap-4 relative w-full">
-                        <div class={classes!(
-                            "flex", "flex-col", "gap-4",
-                            wrong.is_some().then_some("hidden")
-                        )}>
-                            <input
-                                oninput={confirm_oninput}
-                                placeholder="Confirm password"
-                                type="password"
-                                id="confirm"
-                                autocomplete="off"
-                                class="w-full bg-white rounded-xl text-lg border-gray-700 border p-3 transition-transform focus:outline-none"
-                            />
-                        </div>
-                        <button
-                            disabled={(confirm != password) || (password.is_empty())}
-                            class="disabled:opacity-25 disabled:pointer-events-none bg-white border-gray-700 border rounded-xl
-                                hover:bg-gray-200 transition p-2"
-                            onclick={submit}
-                        >
-                            {"Submit"}
-                        </button>
-                        <div class="flex flex-col gap-4 absolute top-full py-4 inset-x-0">
-                            {
-                                // Map the wrong message to a HTML element
-                                // If it was Some, it will map to a paragraph with the message
-                                // If it was None or if the password is empty, it will map to nothing
-                                (!password.is_empty())
-                                    .then_some(())
-                                    .and(wrong.as_ref().map(|message| html! {
-                                        <Error message={message} />
-                                    }))
-                            }
-                            {
-                                // Filter through the conditions and map the wrong ones to a HTML
-                                // element
-                                conditions
-                                    .iter()
-                                    .enumerate()
-                                    .filter_map(|(index, (condition, message))|
-                                        (
-                                            discovered[index]
-                                                && !condition(&username, &password)
-                                                && wrong_index != Some(index)
-                                                && !password.is_empty()
-                                        )
-                                            .then_some(html! {
-                                                <Error message={message} />
-                                            })
-                                    ).collect::<Vec<_>>()
-                            }
-                        </div>
-                        <div class="flex flex-col gap-4 absolute top-full pt-4 inset-x-0">
-                            {
-                                (confirm != password && !confirm.is_empty())
-                                    .then_some(())
-                                    .map(|()| html! {
-                                        <Error message="Passwords do not match." />
-                                    })
-                            }
-                        </div>
-                    </div>
-                </>
+                    } else {
+                        html! {
+                            <>
+                                <div class="flex flex-col gap-4 relative w-full">
+                                    <h1 class="text-2xl font-semibold">
+                                        {"Create an account."}
+                                    </h1>
+                                    <input
+                                        oninput={username_oninput}
+                                        placeholder="Username"
+                                        id="username"
+                                        autocomplete="off"
+                                        class="w-full bg-white rounded-xl text-lg border-gray-700 border p-3 transition-transform focus:outline-none"
+                                    />
+                                    <input
+                                        oninput={password_oninput}
+                                        placeholder="Password"
+                                        type="password"
+                                        id="password"
+                                        autocomplete="off"
+                                        class="w-full bg-white rounded-xl text-lg border-gray-700 border p-3 transition-transform focus:outline-none"
+                                    />
+                                </div>
+                                <div class="flex flex-col gap-4 relative w-full">
+                                    <div class={classes!(
+                                        "flex", "flex-col", "gap-4",
+                                        wrong.is_some().then_some("hidden")
+                                    )}>
+                                        <input
+                                            oninput={confirm_oninput}
+                                            placeholder="Confirm password"
+                                            type="password"
+                                            id="confirm"
+                                            autocomplete="off"
+                                            class="w-full bg-white rounded-xl text-lg border-gray-700 border p-3 transition-transform focus:outline-none"
+                                        />
+                                    </div>
+                                    <button
+                                        disabled={(confirm != password) || (password.is_empty())}
+                                        class="disabled:opacity-25 disabled:pointer-events-none bg-white border-gray-700 border rounded-xl
+                                            hover:bg-gray-200 transition p-2"
+                                        onclick={submit}
+                                    >
+                                        {"Submit"}
+                                    </button>
+                                    <div class="flex flex-col gap-4 absolute top-full py-4 inset-x-0">
+                                        {
+                                            // Map the wrong message to a HTML element
+                                            // If it was Some, it will map to a paragraph with the message
+                                            // If it was None or if the password is empty, it will map to nothing
+                                            (!password.is_empty())
+                                                .then_some(())
+                                                .and(wrong.as_ref().map(|message| html! {
+                                                    <Error message={message} />
+                                                }))
+                                        }
+                                        {
+                                            // Filter through the conditions and map the wrong ones to a HTML
+                                            // element
+                                            conditions
+                                                .iter()
+                                                .enumerate()
+                                                .filter_map(|(index, (condition, message))|
+                                                    (
+                                                        discovered[index]
+                                                            && !condition(&username, &password)
+                                                            && wrong_index != Some(index)
+                                                            && !password.is_empty()
+                                                    )
+                                                        .then_some(html! {
+                                                            <Error message={message} />
+                                                        })
+                                                ).collect::<Vec<_>>()
+                                        }
+                                    </div>
+                                    <div class="flex flex-col gap-4 absolute top-full pt-4 inset-x-0">
+                                        {
+                                            (confirm != password && !confirm.is_empty())
+                                                .then_some(())
+                                                .map(|()| html! {
+                                                    <Error message="Passwords do not match." />
+                                                })
+                                        }
+                                    </div>
+                                </div>
+                            </>
+                        }
+                    }
+                }
             </div>
         </main>
     }
