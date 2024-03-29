@@ -29,10 +29,10 @@ fn App() -> Html {
     // State to store the username
     let username = use_state(String::new);
     // State to store the password
-    let password = use_state(|| "password".to_string());
+    let password = use_state(String::new);
     // State to store the confirmation password
     let confirm = use_state(String::new);
-    let won = use_state(|| true);
+    let won = use_state(|| false);
     // Generate the conditions
     let conditions = use_memo((), |()| conditions());
     let discovered = use_state(|| conditions.iter().map(|_| false).collect::<Vec<_>>());
