@@ -226,8 +226,7 @@ pub fn conditions() -> Vec<Condition> {
         ),
         {
             let (riddle, answer) = [
-                ("What do you call a person that's struggling to set a password? An _____.", "idiot"),
-                ("How many people does it take to set a password?", "answer")
+                ("What do you call a person that's struggling to set a password? An _____.", "idiot")
             ].choose(&mut thread_rng()).unwrap();
             (
                 Box::new(
