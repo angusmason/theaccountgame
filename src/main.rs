@@ -129,16 +129,8 @@ fn App() -> Html {
                     if *won {
                         html! {
                             <div class="flex flex-col gap-4 relative w-full">
-                                <p class="text-2xl font-semibold">
-                                    {"Account created."}
-                                </p>
-                                <p class="flex gap-1">
-                                    <span>
-                                        {"Password (hover to show):"}
-                                    </span>
-                                    <span class="bg-black hover:bg-transparent px-1">
-                                        {(*password).clone()}
-                                    </span>
+                                <p class="text-lg text-red-500 bg-red-200 rounded-xl border-red-500 border p-4">
+                                    {"Error processing request. Try reloading the web page."}
                                 </p>
                             </div>
                         }
