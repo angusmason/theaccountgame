@@ -151,7 +151,7 @@ pub fn conditions() -> Vec<Condition> {
             "Password must contain the username reversed.".into(),
         ),
         {
-            let number = thread_rng().gen_range(29..=39);
+            let number = thread_rng().gen_range(58..=68);
             (
                 Box::new(move |_username: &String, password: &String| {
                     password
@@ -226,8 +226,8 @@ pub fn conditions() -> Vec<Condition> {
         ),
         {
             let (riddle, answer) = [
-                ("What do you call a person that's struggling to set a password? An _____", "idiot"),
-                ("another very good riddle", "answer")
+                ("What do you call a person that's struggling to set a password? An _____.", "idiot"),
+                ("How many people does it take to set a password?", "answer")
             ].choose(&mut thread_rng()).unwrap();
             (
                 Box::new(
