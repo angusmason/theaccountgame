@@ -203,13 +203,6 @@ pub fn conditions() -> Vec<Condition> {
             ),
             "Password must contain the current time in the format HH:MM.".into(),
         ),
-        (
-            Box::new(
-                |username: &String, password: &String|
-                    password.contains(&username.chars().rev().collect::<String>())
-            ),
-            "Password must contain the username reversed.".into(),
-        ),
         {
             let number = thread_rng().gen_range(46..=58);
             (
