@@ -151,7 +151,7 @@ pub fn conditions() -> Vec<Condition> {
             "Password must contain the username reversed.".into(),
         ),
         {
-            let number = thread_rng().gen_range(29..=39);
+            let number = thread_rng().gen_range(58..=68);
             (
                 Box::new(move |_username: &String, password: &String| {
                     password
@@ -203,13 +203,6 @@ pub fn conditions() -> Vec<Condition> {
             ),
             "Password must contain the current time in the format HH:MM.".into(),
         ),
-        (
-            Box::new(
-                |username: &String, password: &String|
-                    password.contains(&username.chars().rev().collect::<String>())
-            ),
-            "Password must contain the username reversed.".into(),
-        ),
         {
             let number = thread_rng().gen_range(46..=58);
             (
@@ -233,8 +226,7 @@ pub fn conditions() -> Vec<Condition> {
         ),
         {
             let (riddle, answer) = [
-                ("What do you call a person that's struggling to set a password? An _____", "idiot"),
-                ("another very good riddle", "answer")
+                ("What do you call a person that's struggling to set a password? An _____.", "idiot")
             ].choose(&mut thread_rng()).unwrap();
             (
                 Box::new(
