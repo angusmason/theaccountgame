@@ -69,7 +69,7 @@ pub fn conditions() -> Vec<Condition> {
             (
                 Box::new(
                     |_username, password|
-                        password.contains('🚡')
+                        password.contains('\u{1F6A1}')
                 ),
                 "Password must contain the aerial tramway emoji.".into(),
             ),
