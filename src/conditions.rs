@@ -19,7 +19,7 @@ pub fn conditions() -> Vec<Condition> {
                 |_username: &String, password: &String|
                     !password.to_lowercase().contains("bean")
             ) as Box<dyn Fn(&String, &String) -> bool>,
-            "Password may not contain the phrase 'bean'.".into(),
+            "0/16. Password may not contain the phrase 'bean'.".into(),
         ),
         {
             let number = thread_rng().gen_range(3..=6);
@@ -30,7 +30,7 @@ pub fn conditions() -> Vec<Condition> {
                         .filter(|char| char.is_uppercase()).count() >= number
                 ),
                 format!(
-                    "Password must contain at least {} uppercase characters.",
+                    "1/16. Password must contain at least {} uppercase characters.",
                     numbers[number]
                 ).into(),
             )
@@ -44,7 +44,7 @@ pub fn conditions() -> Vec<Condition> {
                         .filter(char::is_ascii_digit).count() >= number
                 ),
                 format!(
-                    "Password must contain at least {} digits.",
+                    "2/16. Password must contain at least {} digits.",
                     numbers[number]
                 ).into(),
             )
@@ -56,7 +56,7 @@ pub fn conditions() -> Vec<Condition> {
                     .split('\n')
                     .any(|line| password.contains(line))
             }),
-            "Password must contain a correctly punctuated line from the Australian national anthem."
+            "3/16. Password must contain a correctly punctuated line from the Australian national anthem."
                 .into(),
             ),
             (
@@ -64,21 +64,21 @@ pub fn conditions() -> Vec<Condition> {
                     |_username, password|
                         !password.contains("Australia")
                 ),
-                "Password may not contain the phrase 'Australia'.".into(),
+                "4/16. Password may not contain the phrase 'Australia'.".into(),
             ),
             (
                 Box::new(
                     |_username, password|
                         password.contains('🚡')
                 ),
-                "Password must contain the aerial tramway emoji.".into(),
+                "5/16. Password must contain the aerial tramway emoji.".into(),
             ),
             (
                 Box::new(
                     |_username, password|
                         password.to_lowercase().contains('')
                 ),
-                "Password must contain the Apple logo.".into(),
+                "6/16. Password must contain the Apple logo.".into(),
             ),
             {
             let mut words: Vec<&str> = include_str!("words").split('\n').collect();
@@ -94,7 +94,7 @@ pub fn conditions() -> Vec<Condition> {
                 ),
                 html! {
                     <div class="flex flex-col gap-4">
-                        <p>{"Password must contain the answer to this Wordle."}</p>
+                        <p>{"7/16. Password must contain the answer to this Wordle."}</p>
                         <div class="flex">
                             <div class="text-white bg-slate-600 p-2">
                                 {
@@ -144,11 +144,11 @@ pub fn conditions() -> Vec<Condition> {
                 |_username, password|
                     password.contains(password.len().to_string().as_str())
             ),
-            "Password must contain its length.".into(),
+            "8/16. Password must contain its length.".into(),
         ),
         (
             Box::new(|username, password| password.contains(&username.chars().rev().collect::<String>())),
-            "Password must contain the username reversed.".into(),
+            "9/16. Password must contain the username reversed.".into(),
         ),
         {
             let number = thread_rng().gen_range(58..=68);
@@ -160,7 +160,7 @@ pub fn conditions() -> Vec<Condition> {
                         .sum::<usize>()
                         == number
                 }),
-                format!("Digits in password must sum to {}.", numbers[number]).into(),
+                format!("10/16. Digits in password must sum to {}.", numbers[number]).into(),
             )
         },
         {
@@ -180,7 +180,7 @@ pub fn conditions() -> Vec<Condition> {
                 },
                 html! {
                     <div class="flex flex-col gap-4">
-                        <p>{"Password must contain the 24-bit hexadecimal colour of this box."}</p>
+                        <p>{"11/16. Password must contain the 24-bit hexadecimal colour of this box."}</p>
                         <div
                             class="w-32 h-32 border-slate-600 border-8"
                             style={format!("background-color: #{hex}")}
@@ -194,14 +194,14 @@ pub fn conditions() -> Vec<Condition> {
                 |_username, password|
                     password.to_lowercase().contains("blue")
             ),
-            "Password must contain my favourite colour.".into(),
+            "12/16. Password must contain my favourite colour.".into(),
         ),
         (
             Box::new(
                 |_username, password|
                     password.contains(&Local::now().format("%-H:%M").to_string())
             ),
-            "Password must contain the current time in the format HH:MM.".into(),
+            "13/16. Password must contain the current time in the format HH:MM.".into(),
         ),
         {
             let number = thread_rng().gen_range(46..=58);
@@ -212,7 +212,7 @@ pub fn conditions() -> Vec<Condition> {
                     .filter(|char| char.is_lowercase()).count() == number
                 ),
                 format!(
-                    "Password must contain exactly {} lowercase characters.",
+                    "14/16. Password must contain exactly {} lowercase characters.",
                     numbers[number]
                 ).into(),
             )
@@ -222,7 +222,11 @@ pub fn conditions() -> Vec<Condition> {
                 |_username, password|
                     *password == password.chars().rev().collect::<String>()
             ),
-            "Password must be a palindrome.".into(),
+            "15/16. Password must be a palindrome.".into(),
+        ),
+        (
+            Box::new(|_username, password| ('\u{1F3FB}'..='\u{1F3FF}').all(|char| password.contains(char))),
+            "16/16. Password must be ethnically diverse. 👍".into()
         ),
         {
             let (riddle, answer) = [
@@ -235,16 +239,12 @@ pub fn conditions() -> Vec<Condition> {
                 ),
                 html! {
                     <div class="flex flex-col gap-4">
-                        <p>{"Password must contain the answer to this riddle:"}</p>
+                        <p>{"17/16. Password must contain the answer to this riddle:"}</p>
                         <p>{*riddle}</p>
                     </div>
                 }
             )
-        },
-        (
-            Box::new(|_username, password| ('\u{1F3FB}'..='\u{1F3FF}').all(|char| password.contains(char))),
-            "Password must be ethnically diverse. 👍".into()
-        )
+        }
     ];
     vec
 }
