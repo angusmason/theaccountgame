@@ -1,7 +1,10 @@
+use std::iter::successors;
+
 use chrono::Local;
 use rand::thread_rng;
 use rand::{prelude::SliceRandom, Rng};
-use yew::{html, Html};
+use yew::virtual_dom::VNode;
+use yew::{classes, html, Html};
 
 pub type Condition = (Box<dyn Fn(&String, &String) -> bool>, Html);
 enum Colour {
@@ -15,11 +18,10 @@ pub fn conditions() -> Vec<Condition> {
     let numbers: Vec<_> = include_str!("numbers").trim().split('\n').collect();
     let vec = vec![
         (
-            Box::new(
-                |_username: &String, password: &String|
-                    !password.to_lowercase().contains("bean")
-            ) as Box<dyn Fn(&String, &String) -> bool>,
-            "0/16. Password may not contain the phrase 'bean'.".into(),
+            Box::new(|_username: &String, password: &String| {
+                !password.to_lowercase().contains("bean")
+            }) as Box<dyn Fn(&String, &String) -> bool>,
+            "Password may not contain the phrase 'bean'.".into(),
         ),
         {
             let number = thread_rng().gen_range(3..=6);
@@ -30,7 +32,7 @@ pub fn conditions() -> Vec<Condition> {
                         .filter(|char| char.is_uppercase()).count() >= number
                 ),
                 format!(
-                    "1/16. Password must contain at least {} uppercase characters.",
+                    "Password must contain at least {} uppercase characters.",
                     numbers[number]
                 ).into(),
             )
@@ -44,7 +46,7 @@ pub fn conditions() -> Vec<Condition> {
                         .filter(char::is_ascii_digit).count() >= number
                 ),
                 format!(
-                    "2/16. Password must contain at least {} digits.",
+                    "Password must contain at least {} digits.",
                     numbers[number]
                 ).into(),
             )
@@ -56,7 +58,7 @@ pub fn conditions() -> Vec<Condition> {
                     .split('\n')
                     .any(|line| password.contains(line))
             }),
-            "3/16. Password must contain a correctly punctuated line from the Australian national anthem."
+            "Password must contain a correctly punctuated line from the Australian national anthem."
                 .into(),
             ),
             (
@@ -64,21 +66,21 @@ pub fn conditions() -> Vec<Condition> {
                     |_username, password|
                         !password.contains("Australia")
                 ),
-                "4/16. Password may not contain the phrase 'Australia'.".into(),
+                "Password may not contain the phrase 'Australia'.".into(),
             ),
             (
                 Box::new(
                     |_username, password|
-                        password.contains('🚡')
+                        password.contains('\u{1F6A1}')
                 ),
-                "5/16. Password must contain the aerial tramway emoji.".into(),
+                "Password must contain the aerial tramway emoji.".into(),
             ),
             (
                 Box::new(
                     |_username, password|
                         password.to_lowercase().contains('')
                 ),
-                "6/16. Password must contain the Apple logo.".into(),
+                "Password must contain the Apple logo.".into(),
             ),
             {
             let mut words: Vec<&str> = include_str!("words").split('\n').collect();
@@ -94,9 +96,9 @@ pub fn conditions() -> Vec<Condition> {
                 ),
                 html! {
                     <div class="flex flex-col gap-4">
-                        <p>{"7/16. Password must contain the answer to this Wordle."}</p>
+                        <p>{"Password must contain the answer to this Wordle."}</p>
                         <div class="flex">
-                            <div class="text-white bg-slate-600 p-2">
+                            <div class="p-2 text-white bg-slate-600">
                                 {
                                     words.iter().map(|word| {
                                         html! {
@@ -105,24 +107,21 @@ pub fn conditions() -> Vec<Condition> {
                                                     match colour {
                                                         Colour::Grey => html! {
                                                             <div
-                                                                class="bg-gray-500 w-8 grid
-                                                                    place-content-center"
+                                                                class="grid w-8 bg-gray-500 // place-content-center"
                                                             >
                                                                 {character.to_string().to_uppercase()}
                                                             </div>
                                                         },
                                                         Colour::Yellow => html! {
                                                             <div
-                                                                class="bg-yellow-500 w-8 grid
-                                                                    place-content-center"
+                                                                class="grid w-8 bg-yellow-500 // place-content-center"
                                                             >
                                                                 {character.to_string().to_uppercase()}
                                                             </div>
                                                         },
                                                         Colour::Green => html! {
                                                             <div
-                                                                class="bg-green-500 w-8 grid
-                                                                    place-content-center"
+                                                                class="grid w-8 bg-green-500 // place-content-center"
                                                             >
                                                                 {character.to_string().to_uppercase()}
                                                             </div>
@@ -144,11 +143,11 @@ pub fn conditions() -> Vec<Condition> {
                 |_username, password|
                     password.contains(password.len().to_string().as_str())
             ),
-            "8/16. Password must contain its length.".into(),
+            "Password must contain its length.".into(),
         ),
         (
             Box::new(|username, password| password.contains(&username.chars().rev().collect::<String>())),
-            "9/16. Password must contain the username reversed.".into(),
+            "Password must contain the username reversed.".into(),
         ),
         {
             let number = thread_rng().gen_range(58..=68);
@@ -160,7 +159,7 @@ pub fn conditions() -> Vec<Condition> {
                         .sum::<usize>()
                         == number
                 }),
-                format!("10/16. Digits in password must sum to {}.", numbers[number]).into(),
+                format!("Digits in password must sum to {}.", numbers[number]).into(),
             )
         },
         {
@@ -180,9 +179,9 @@ pub fn conditions() -> Vec<Condition> {
                 },
                 html! {
                     <div class="flex flex-col gap-4">
-                        <p>{"11/16. Password must contain the 24-bit hexadecimal colour of this box."}</p>
+                        <p>{"Password must contain the 24-bit hexadecimal colour of this box."}</p>
                         <div
-                            class="w-32 h-32 border-slate-600 border-8"
+                            class="w-32 h-32 border-8 border-slate-600"
                             style={format!("background-color: #{hex}")}
                         />
                     </div>
@@ -194,14 +193,14 @@ pub fn conditions() -> Vec<Condition> {
                 |_username, password|
                     password.to_lowercase().contains("blue")
             ),
-            "12/16. Password must contain my favourite colour.".into(),
+            "Password must contain my favourite colour.".into(),
         ),
         (
             Box::new(
                 |_username, password|
                     password.contains(&Local::now().format("%-H:%M").to_string())
             ),
-            "13/16. Password must contain the current time in the format HH:MM.".into(),
+            "Password must contain the current time in the format HH:MM.".into(),
         ),
         {
             let number = thread_rng().gen_range(46..=58);
@@ -212,7 +211,7 @@ pub fn conditions() -> Vec<Condition> {
                     .filter(|char| char.is_lowercase()).count() == number
                 ),
                 format!(
-                    "14/16. Password must contain exactly {} lowercase characters.",
+                    "Password must contain exactly {} lowercase characters.",
                     numbers[number]
                 ).into(),
             )
@@ -222,11 +221,7 @@ pub fn conditions() -> Vec<Condition> {
                 |_username, password|
                     *password == password.chars().rev().collect::<String>()
             ),
-            "15/16. Password must be a palindrome.".into(),
-        ),
-        (
-            Box::new(|_username, password| ('\u{1F3FB}'..='\u{1F3FF}').all(|char| password.contains(char))),
-            "16/16. Password must be ethnically diverse. 👍".into()
+            "Password must be a palindrome.".into(),
         ),
         {
             let (riddle, answer) = [
@@ -239,12 +234,166 @@ pub fn conditions() -> Vec<Condition> {
                 ),
                 html! {
                     <div class="flex flex-col gap-4">
-                        <p>{"17/16. Password must contain the answer to this riddle:"}</p>
+                        <p>{"Password must contain the answer to this riddle:"}</p>
                         <p>{*riddle}</p>
                     </div>
                 }
             )
-        }
+        },
+        (
+            Box::new(|_username, password| ('\u{1F3FB}'..='\u{1F3FF}').all(|char| password.contains(char))),
+            "Password must be ethnically diverse. 👍".into()
+        ),
+        {
+            const MAZE_SIZE: u32 = 20;
+            const BORDER_WIDTH: u32 = 1;
+            type Cell = (Position, bool);
+            type Position = (u32, u32);
+            fn neighbours((x, y): Position) -> Vec<Position> {
+                vec![
+                    (x, y.wrapping_sub(1)),
+                    (x.wrapping_add(1), y),
+                    (x, y.wrapping_add(1)),
+                    (x.wrapping_sub(1), y),
+                ]
+            }
+            #[repr(u8)]
+            enum Direction {
+                Up = b'R',
+                Right = b'D',
+                Down = b'L',
+                Left = b'U',
+            }
+
+            let mut maze: Vec<_> = (0..MAZE_SIZE)
+                .flat_map(|y| (0..MAZE_SIZE).map(move |x| ((x, y), false) as Cell))
+                .collect();
+            let mut stack = Vec::new();
+            let mut paths = Vec::new();
+            let cell = (0, 0);
+            let (_, visited) = maze
+                .iter_mut()
+                .find(|(position, _)| *position == cell)
+                .unwrap();
+            *visited = true;
+            stack.push(cell);
+            while let Some(cell) = stack.pop() {
+                let neighbours: Vec<_> = neighbours(cell)
+                    .into_iter()
+                    .filter_map(|neighbour| {
+                        maze.iter().find_map(|(position, visited)| {
+                            (*position == neighbour && !visited).then_some(*position)
+                        })
+                    })
+                    .collect();
+                if let Some(neighbour) = neighbours.choose(&mut thread_rng()) {
+                    stack.push(cell);
+                    paths.push((cell, *neighbour));
+                    let (_, visited) = maze
+                        .iter_mut()
+                        .find(|(position, _)| *position == *neighbour)
+                        .unwrap();
+                    *visited = true;
+                    stack.push(*neighbour);
+                }
+            }
+            let (solution, start, goal) = {
+                let maze: Vec<_> = maze.iter().map(|(position, _)| position).copied().collect();
+                let cell = *maze.choose(&mut thread_rng()).unwrap();
+                let goal = *maze.choose(&mut thread_rng()).unwrap();
+                let mut queue = vec![cell];
+                let mut explored = vec![cell];
+                let mut links = Vec::new();
+                while let Some(cell) = queue.pop() {
+                    if cell == goal {
+                        break;
+                    }
+                    for neighbour in neighbours(cell) {
+                        if maze.contains(&neighbour)
+                            && !explored.contains(&neighbour)
+                            && paths.iter().any(|(a, b)| {
+                                *a == cell && *b == neighbour || *a == neighbour && *b == cell
+                            })
+                        {
+                            queue.push(neighbour);
+                            links.push((neighbour, cell));
+                            explored.push(neighbour);
+                        }
+                    }
+                }
+                let path: Vec<_> = successors(Some(goal), move |&cell| {
+                    links
+                        .iter()
+                        .find_map(|(to, from)| (*to == cell).then_some(*from))
+                })
+                .collect();
+                let path: Vec<_> = path.iter().copied().rev().collect();
+                (path, cell, goal)
+            };
+            let solution: String = solution
+                .windows(2)
+                .map(|window| {
+                    let [from, to] = window else { unreachable!() };
+                    (if from.0 < to.0 {
+                        Direction::Right
+                    } else if from.0 > to.0 {
+                        Direction::Left
+                    } else if from.1 < to.1 {
+                        Direction::Down
+                    } else {
+                        Direction::Up
+                    }) as u8 as char
+                })
+                .collect();
+            let maze = (0..MAZE_SIZE)
+                .flat_map(|y| {
+                    let paths = paths.clone();
+                    (0..MAZE_SIZE).map(move |x| {
+                        let neighbours: Vec<_> = neighbours((x, y))
+                            .iter()
+                            .map(|neighbour| {
+                                format!(
+                                    "{}px",
+                                    if paths.iter().any(|(from, to)| {
+                                        (*from == (x, y) && *to == *neighbour)
+                                            || (*from == *neighbour && *to == (x, y))
+                                    }) {
+                                        0
+                                    } else {
+                                        BORDER_WIDTH
+                                    }
+                                )
+                            })
+                            .collect();
+                        let borders = neighbours.join(" ");
+                        html! {
+                            <div
+                                style={format!("border-width: {borders}")}
+                                class={classes!(
+                                    "border-white", "size-full",
+                                    ((x, y) == start).then_some("bg-green-500"),
+                                    ((x, y) == goal).then_some("bg-red-500"),
+                                )}
+                            />
+                        }
+                    })
+                })
+                .collect::<VNode>();
+            (
+                Box::new(move |_username, password| password.contains(&solution)),
+                html! {
+                    <div>
+                        <p>{"Password must contain the optimal solution to this maze, from green to red."}</p>
+                        <p>{"R is up, D is right, L is down, U is left."}</p>
+                        <div class="p-4 aspect-square bg-slate-600">
+                            <div class="grid grid-cols-[repeat(20,minmax(0,1fr))] size-full">
+                                {maze}
+                            </div>
+                        </div>
+                    </div>
+                },
+            )
+        },
     ];
     vec
 }

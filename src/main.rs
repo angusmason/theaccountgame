@@ -18,7 +18,7 @@ struct ErrorProps {
 #[function_component]
 fn Error(props: &ErrorProps) -> Html {
     html! {
-        <p class="text-1xl text-red-500 bg-red-200 rounded-xl border-red-500 border p-4">
+        <p class="p-4 text-red-500 bg-red-200 border border-red-500 text-1xl rounded-xl">
             {props.message.clone()}
         </p>
     }
@@ -121,15 +121,15 @@ fn App() -> Html {
 
     // Return some HTML
     html! {
-        <main class="flex justify-center grow h-full">
+        <main class="flex justify-center h-full grow">
             <div
-                class="flex flex-col items-center justify-center h-full max-w-md w-full px-4 gap-4"
+                class="flex flex-col items-center justify-center w-full h-full max-w-md gap-4 px-4"
             >
                 {
                     if *won {
                         html! {
-                            <div class="flex flex-col gap-4 relative w-full">
-                                <p class="text-lg text-red-500 bg-red-200 rounded-xl border-red-500 border p-4">
+                            <div class="relative flex flex-col w-full gap-4">
+                                <p class="p-4 text-lg text-red-500 bg-red-200 border border-red-500 rounded-xl">
                                     {"Error processing request. Try reloading the web page."}
                                 </p>
                             </div>
@@ -137,7 +137,7 @@ fn App() -> Html {
                     } else {
                         html! {
                             <>
-                                <div class="flex flex-col gap-4 relative w-full">
+                                <div class="relative flex flex-col w-full gap-4">
                                     <h1 class="text-2xl font-semibold">
                                         {"Create an account."}
                                     </h1>
@@ -146,7 +146,7 @@ fn App() -> Html {
                                         placeholder="Username"
                                         id="username"
                                         autocomplete="off"
-                                        class="w-full bg-white rounded-xl text-lg border-gray-700 border p-3 transition-transform focus:outline-none"
+                                        class="w-full p-3 text-lg transition-transform bg-white border border-gray-700 rounded-xl focus:outline-none"
                                     />
                                     <input
                                         oninput={password_oninput}
@@ -154,10 +154,10 @@ fn App() -> Html {
                                         type="password"
                                         id="password"
                                         autocomplete="off"
-                                        class="w-full bg-white rounded-xl text-lg border-gray-700 border p-3 transition-transform focus:outline-none"
+                                        class="w-full p-3 text-lg transition-transform bg-white border border-gray-700 rounded-xl focus:outline-none"
                                     />
                                 </div>
-                                <div class="flex flex-col gap-4 relative w-full">
+                                <div class="relative flex flex-col w-full gap-4">
                                     <div class={classes!(
                                         "flex", "flex-col", "gap-4",
                                         wrong.is_some().then_some("hidden")
@@ -168,18 +168,17 @@ fn App() -> Html {
                                             type="password"
                                             id="confirm"
                                             autocomplete="off"
-                                            class="w-full bg-white rounded-xl text-lg border-gray-700 border p-3 transition-transform focus:outline-none"
+                                            class="w-full p-3 text-lg transition-transform bg-white border border-gray-700 rounded-xl focus:outline-none"
                                         />
                                     </div>
                                     <button
                                         disabled={(confirm != password) || (password.is_empty())}
-                                        class="disabled:opacity-25 disabled:pointer-events-none bg-white border-gray-700 border rounded-xl
-                                            hover:bg-gray-200 transition p-2"
+                                        class="p-2 transition bg-white border border-gray-700 disabled:opacity-25 disabled:pointer-events-none rounded-xl hover:bg-gray-200"
                                         onclick={submit}
                                     >
                                         {"Submit"}
                                     </button>
-                                    <div class="flex flex-col gap-4 absolute top-full py-4 inset-x-0">
+                                    <div class="absolute inset-x-0 flex flex-col gap-4 py-4 top-full">
                                         {
                                             // Map the wrong message to a HTML element
                                             // If it was Some, it will map to a paragraph with the message
@@ -209,7 +208,7 @@ fn App() -> Html {
                                                 ).collect::<Vec<_>>()
                                         }
                                     </div>
-                                    <div class="flex flex-col gap-4 absolute top-full pt-4 inset-x-0">
+                                    <div class="absolute inset-x-0 flex flex-col gap-4 pt-4 top-full">
                                         {
                                             (confirm != password && !confirm.is_empty())
                                                 .then_some(())
