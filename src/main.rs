@@ -6,9 +6,9 @@ use crate::conditions::conditions;
 use chrono::Local;
 use web_sys::HtmlInputElement;
 use yew::{
-    classes, function_component, html, use_effect, use_memo, use_state, virtual_dom::VNode, Html, InputEvent, Properties, Renderer, TargetCast,
+    classes, function_component, html, use_effect, use_memo, use_state, virtual_dom::VNode, Html,
+    InputEvent, Properties, Renderer, TargetCast,
 };
-
 
 #[derive(Properties, PartialEq)]
 struct ErrorProps {
@@ -130,7 +130,7 @@ fn App() -> Html {
                         html! {
                             <div class="relative flex flex-col w-full gap-4">
                                 <p class="p-4 text-lg text-red-500 bg-red-200 border border-red-500 rounded-xl">
-                                    {"Error processing request. Try reloading the web page."}
+                                    {"This password is already taken. Please choose another."}
                                 </p>
                             </div>
                         }
