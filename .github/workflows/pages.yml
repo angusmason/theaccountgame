@@ -40,7 +40,7 @@ jobs:
         node-version: 20
 
     - name: Build Tailwind CSS
-      run: npx @tailwindcss/cli -i src/styles.css -o out.css --watch
+      run: npx @tailwindcss/cli@4.1.15 -i src/styles.css -o out.css --watch
 
     - name: Setup Rust
       uses: actions-rs/toolchain@v1
