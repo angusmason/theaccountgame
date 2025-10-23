@@ -40,7 +40,7 @@ jobs:
         node-version: 20
     
     - name: Install dependencies
-      run: npm ci
+      run: npm install
 
     - name: Build Tailwind CSS
       run: npx tailwindcss -i src/styles.css -o out.css -m
