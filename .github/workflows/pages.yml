@@ -41,9 +41,11 @@ jobs:
     
     - name: Install dependencies
       run: npm install
+      working-directory: ./
 
     - name: Build Tailwind CSS
       run: npx tailwindcss -i src/styles.css -o out.css -m
+      working-directory: ./
 
     - name: Setup Rust
       uses: actions-rs/toolchain@v1
