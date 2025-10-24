@@ -1,8 +1,11 @@
-@tailwind base;
-@tailwind components;
+@import tailwindcss/preflight;
 @tailwind utilities;
 
 @font-face {
     font-family: "RedHatDisplay";
     src: url("fonts/RedHatDisplay.ttf");
+}
+
+@theme {
+  --font-sans: "RedHatDisplay", "sans-serif";
 }
